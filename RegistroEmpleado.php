@@ -3,8 +3,8 @@
 <head>
 
     <?php include 'funciones.php';
-          include 'Catalogo.php';
-          $catalogo = new Catalogo();
+    include 'Catalogo.php';
+    $catalogo = new Catalogo();
     ?>
     <link rel="stylesheet" href="estilo.css" type="text/css">
     <title>Registro de empleados</title>
@@ -24,7 +24,7 @@
 
 
     <!-- Form de datos generales  -->
-    <form action="RegistroEmpleado.php" method="post">
+    <form action="RegistroEmpleado.php" method="post" enctype="multipart/form-data">
         <label for="apellidoPaterno">Apellido Paterno:</label>
         <input type="text" id="apellidoPaterno" name="apellidoPaterno">
 
@@ -37,32 +37,45 @@
         <label for="sexo">Sexo:</label>
         <select name="sexo" id="sexo">
             <?php
-                //sexos es un arreglo que contiene tres arreglos
-                $sexos= $catalogo->GetCatSexo();
-                //para cada arreglo (0, 1 y 2) se obtiene la descripcion 
-                foreach ($sexos as $sexo) {
-                    $nombreSexo = $sexo['Descripcion'];
-                    //el valor de la descripcion se pone como opcion del select
-                    echo "<option value=\"$nombreSexo\">$nombreSexo</option>";
-                }
+            //sexos es un arreglo que contiene tres arreglos
+            $sexos = $catalogo->GetCatSexo();
+            //para cada arreglo (0, 1 y 2) se obtiene la descripcion 
+            foreach ($sexos as $sexo) {
+                $nombreSexo = $sexo['Descripcion'];
+                //el valor de la descripcion se pone como opcion del select
+                echo "<option value=\"$nombreSexo\">$nombreSexo</option>";
+            }
             ?>
-
-
         </select>
-
-         <!-- <input type="text" id="sexo" name="sexo"> -->
-        
 
         <label for="fechaNacimiento">Fecha de nacimiento:</label>
         <input type="date" id="fechaNacimiento" name="fechaNacimiento">
 
-
-        <!-- fotografia -->
-
+        <label for="fotografia">Seleccione una fotografia:</label>
+        <input type="file" name="fotografia" id="fotografia" accept="image/*" onchange="mostrarPreview()">
+        <img id="preview" src="#" style="display:none; max-width: 300px; max-height: 300px;">
         <input type="submit">
 
 
     </form>
+
+    <script>
+        function mostrarPreview() {
+            var fotografia = document.getElementById('fotografia');
+            var preview = document.getElementById('preview');
+
+            // Ensure that a file is selected
+            if (fotografia.files && fotografia.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(fotografia.files[0]);
+            }
+        }
+    </script>
 
     <?php
     //obtener datos del formulario
@@ -72,13 +85,14 @@
         $nombre = $_POST["nombre"];
         $sexo = $_POST["sexo"];
         $fechaNacimiento = $_POST["fechaNacimiento"];
+        $fotografia = $_FILES["fotografia"];
     }
 
     $numeroEmpleado = generaNumeroEmpleado();
-    guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $numeroEmpleado);
+    guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado);
 
 
-    
+
 
 
     //obtener carpeta
@@ -89,7 +103,7 @@
 
     $apellidoPaternoJSON = $datosEmpleado->apellidoPaterno;
 
-    
+
 
     $catalogo->GetCatSexo();
     /*echo "apellido paterno: $apellidoPaternoJSON <br>";
