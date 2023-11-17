@@ -2,7 +2,10 @@
 
 <head>
 
-
+    <?php include 'funciones.php';
+          include 'Catalogo.php';
+          $catalogo = new Catalogo();
+    ?>
     <link rel="stylesheet" href="estilo.css" type="text/css">
     <title>Registro de empleados</title>
     <!-- Required meta tags -->
@@ -32,12 +35,28 @@
         <input type="text" id="nombre" name="nombre">
 
         <label for="sexo">Sexo:</label>
-        <input type="text" id="sexo" name="sexo">
+        <select name="sexo" id="sexo">
+            <?php
+                //sexos es un arreglo que contiene tres arreglos
+                $sexos= $catalogo->GetCatSexo();
+                //para cada arreglo (0, 1 y 2) se obtiene la descripcion 
+                foreach ($sexos as $sexo) {
+                    $nombreSexo = $sexo['Descripcion'];
+                    //el valor de la descripcion se pone como opcion del select
+                    echo "<option value=\"$nombreSexo\">$nombreSexo</option>";
+                }
+            ?>
+
+
+        </select>
+
+         <!-- <input type="text" id="sexo" name="sexo"> -->
+        
 
         <label for="fechaNacimiento">Fecha de nacimiento:</label>
         <input type="date" id="fechaNacimiento" name="fechaNacimiento">
 
-    
+
         <!-- fotografia -->
 
         <input type="submit">
@@ -53,46 +72,13 @@
         $nombre = $_POST["nombre"];
         $sexo = $_POST["sexo"];
         $fechaNacimiento = $_POST["fechaNacimiento"];
-        //$numeroEmpleado = $_POST["numeroEmpleado"];
     }
 
-    //itera por todos los archivos de EmpleadoData, el numero del nuevo Empleado es el siguiente numero
-    $directorio = 'C:/xampp/htdocs/EjercicioReclutamiento/EmpleadoData';
-    $archivos = scandir($directorio);
+    $numeroEmpleado = generaNumeroEmpleado();
+    guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $numeroEmpleado);
+
+
     
-    //elimina el directorio actual y el padre del conteo
-    $archivos = array_diff($archivos, ['.', '..']);
-    $numeroArchivos = count($archivos);
-    echo "numero de archivos: $numeroArchivos";
-
-    for ($i=1; $i <= $numeroArchivos + 1; $i++) { 
-        $existeArchivo = file_exists('C:/xampp/htdocs/EjercicioReclutamiento/EmpleadoData/'.$i.'.json');
-        if ($existeArchivo == false){
-            $numeroEmpleado = $i;
-        }
-    }
-    
-    //almacenar datos en un arreglo
-    $empleado = array(
-        'apellidoPaterno' => $apellidoPaterno,
-        'apellidoMaterno' => $apellidoMaterno,
-        'nombre' => $nombre,
-        'sexo' => $sexo,
-        'fechaNacimento' => $fechaNacimiento,
-        'numeroEmpleado' => $numeroEmpleado
-    );
-
-
-    if ($empleado['apellidoPaterno'] != null ) {
-        //guardar arreglo en formtato JSON
-        $jsonEmpleado = json_encode($empleado);
-
-        //guardar archivo en carpeta
-        $rutaArchivo = 'C:/xampp/htdocs/EjercicioReclutamiento/EmpleadoData/' . $numeroEmpleado . '.json';
-        file_put_contents($rutaArchivo, $jsonEmpleado);
-    }
-
-
 
 
     //obtener carpeta
@@ -103,7 +89,9 @@
 
     $apellidoPaternoJSON = $datosEmpleado->apellidoPaterno;
 
+    
 
+    $catalogo->GetCatSexo();
     /*echo "apellido paterno: $apellidoPaternoJSON <br>";
     echo "apellido materno: $apellidoMaternojSON <br>";
     echo "nombre: $nombreJSON <br>";
