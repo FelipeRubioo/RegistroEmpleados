@@ -3,8 +3,7 @@
 <head>
 
     <?php include 'funciones.php';
-    include 'Catalogo.php';
-    $catalogo = new Catalogo();
+
     ?>
     <link rel="stylesheet" href="estilo.css" type="text/css">
     <title>Registro de empleados</title>
@@ -24,43 +23,155 @@
 
 
     <!-- Form de datos generales  -->
-    <form action="RegistroEmpleado.php" method="post" enctype="multipart/form-data">
-        <label for="apellidoPaterno">Apellido Paterno:</label>
-        <input type="text" id="apellidoPaterno" name="apellidoPaterno">
+    <div>
+        <h3>Datos generales:</h3>
+        <form action="RegistroEmpleado.php" method="post" enctype="multipart/form-data">
+            <label for="apellidoPaterno">Apellido Paterno:</label>
+            <input type="text" id="apellidoPaterno" name="apellidoPaterno">
 
-        <label for="apellidoMaterno">Apellido Materno:</label>
-        <input type="text" id="apellidoMaterno" name="apellidoMaterno">
+            <label for="apellidoMaterno">Apellido Materno:</label>
+            <input type="text" id="apellidoMaterno" name="apellidoMaterno">
 
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre">
 
-        <label for="sexo">Sexo:</label>
-        <select name="sexo" id="sexo">
+            <label for="sexo">Sexo:</label>
+            <select name="sexo" id="sexo">
+                <?php
+                crearSelect("sexo");
+                ?>
+            </select>
+
+            <label for="fechaNacimiento">Fecha de nacimiento:</label>
+            <input type="date" id="fechaNacimiento" name="fechaNacimiento">
+
+            <label for="fotografia">Seleccione una fotografia:</label>
+            <input type="file" name="fotografia" id="fotografia" accept="image/*" onchange="mostrarPreviewPonerDefault()">
+            <img id="preview" src="#" style="display:none; max-width: 300px; max-height: 300px;">
+            <input type="submit">
+
+        </form>
+    </div>
+
+    <!-- Form de datos adicionales -->
+    <div>
+        <h3>Datos adicionales:</h3>
+        <form action="RegistroEmpleado.php" method="post">
+            <label for="curp">CURP:</label>
+            <input type="text" id="curp" name="curp">
+
+            <label for="RFC">RFC:</label>
+            <input type="text" id="RFC" name="RFC">
+            <span class="help-text">13 caracteres</span>
+
+            <label for="estadoCivil">Estado civil:</label>
+            <select name="estadoCivil" id="estadoCivil">
+
+                <?php
+                crearSelect("estadoCivil");
+                ?>
+            </select>
+
+            <label for="tipoSangre">Tipo de sangre:</label>
+            <select name="tipoSangre" id="tipoSangre">
+                <?php
+                crearSelect("tipoSangre");
+                ?>
+            </select>
+
+            <label for="estatura">Estatura:</label>
+            <input type="number" id="estatura" name="estatura" step="0.01" min="1.40" max="2.30" required>
+
+            <label for="peso">Peso:</label>
+            <input type="number" id="peso" name="peso" step="0.01" min="40" max="150" required>
+
+            <label for="complexion">Complexion:</label>
+            <select name="complexion" id="complexion">
+                <?php
+                crearSelect("complexion");
+                ?>
+            </select>
+
+            <label for="discapacidad">Discapacidad:</label>
+            <select name="discapacidad" id="discapacidad">
+                <?php
+                crearSelect("discapacidad");
+                ?>
+            </select>
+
+            <input type="submit">
+
+        </form>
+
+
+
+
+    </div>
+
+    <!-- Domicilio -->
+    <div>
+        <h3>Domicilio:</h3>
+        <form action="RegistroEmpleado.php" method="post"></form>
+
+        <label for="pais">País:</label>
+        <select name="pais" id="pais">
             <?php
-            //sexos es un arreglo que contiene tres arreglos
-            $sexos = $catalogo->GetCatSexo();
-            //para cada arreglo (0, 1 y 2) se obtiene la descripcion 
-            foreach ($sexos as $sexo) {
-                $nombreSexo = $sexo['Descripcion'];
-                //el valor de la descripcion se pone como opcion del select
-                echo "<option value=\"$nombreSexo\">$nombreSexo</option>";
-            }
+            crearSelect("pais");
             ?>
         </select>
 
-        <label for="fechaNacimiento">Fecha de nacimiento:</label>
-        <input type="date" id="fechaNacimiento" name="fechaNacimiento">
+        <label for="estado">Estado:</label>
+        <select name="estado" id="estado">
+            <?php
+            crearSelect("estado");
+            ?>
+        </select>
 
-        <label for="fotografia">Seleccione una fotografia:</label>
-        <input type="file" name="fotografia" id="fotografia" accept="image/*" onchange="mostrarPreview()">
-        <img id="preview" src="#" style="display:none; max-width: 300px; max-height: 300px;">
-        <input type="submit">
+        <label for="municipio">Municipio:</label>
+        <select name="municipio" id="municipio">
+            <?php
+            crearSelect("municipio");
+            ?>
+        </select>
 
+        <label for="localidad">Localidad:</label>
+        <select name="localidad" id="localidad">
+            <?php
+            crearSelect("localidad");
+            ?>
+        </select>
 
-    </form>
+        <label for="colonia">Colonia:</label>
+        <select name="colonia" id="colonia">
+            <?php
+            crearSelect("colonia");
+            ?>
+        </select>
+
+        <label for="codigoPostal">Codigo postal:</label>
+        <input type="number" id="codigoPostal" name="codigoPostal" minlength="5" maxlength="10" required>
+
+        <label for="tipoVialidad">Tipo de vialidad:</label>
+        <select name="tipoVialidad" id="tipoVialidad">
+            <?php
+            crearSelect("tipoVialidad");
+            ?>
+        </select>
+
+        <label for="nombreVialidad">Nombre de vialidad:</label>
+        <input type="text" id="nombreVialidad" name="nombreVialidad" required>
+
+        <label for="numeroExterior">Numero exterior:</label>
+        <input type="number" id="numeroExterior" name="numeroExterior" minlength="1" maxlength="6" required>
+
+        <label for="numeroInterior">Numero interior:</label>
+        <input type="number" id="numeroInterior" name="numeroInterior" minlength="5" maxlength="10">
+    </div>
+
+     <!-- Estudios -->
 
     <script>
-        function mostrarPreview() {
+        function mostrarPreviewPonerDefault() {
             var fotografia = document.getElementById('fotografia');
             var preview = document.getElementById('preview');
 
@@ -73,6 +184,9 @@
                     preview.style.display = 'block';
                 };
                 reader.readAsDataURL(fotografia.files[0]);
+            } else {
+                fotografia.src = '"C:/xampp/htdocs/EjercicioReclutamiento/img/silueta.png"';
+
             }
         }
     </script>
@@ -86,6 +200,12 @@
         $sexo = $_POST["sexo"];
         $fechaNacimiento = $_POST["fechaNacimiento"];
         $fotografia = $_FILES["fotografia"];
+
+        // revisarFotografia($fotografia);
+
+        //   if(strlen($fotografia["tmp_name"]) == 0){
+        //       $fotografia["name"] = "silueta.png";
+        //   }
     }
 
     $numeroEmpleado = generaNumeroEmpleado();
@@ -96,16 +216,13 @@
 
 
     //obtener carpeta
-    $archivoJson = file_get_contents($rutaArchivo);
+    //  $archivoJson = file_get_contents($rutaArchivo);
 
     //leer archivo JSON
-    $datosEmpleado = json_decode($archivoJson);
+    //  $datosEmpleado = json_decode($archivoJson);
 
-    $apellidoPaternoJSON = $datosEmpleado->apellidoPaterno;
+    // $apellidoPaternoJSON = $datosEmpleado->apellidoPaterno;
 
-
-
-    $catalogo->GetCatSexo();
     /*echo "apellido paterno: $apellidoPaternoJSON <br>";
     echo "apellido materno: $apellidoMaternojSON <br>";
     echo "nombre: $nombreJSON <br>";

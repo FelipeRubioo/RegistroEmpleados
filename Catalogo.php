@@ -13508,7 +13508,141 @@ class Catalogo {
             ),
         );
     }
+    public function GetCatVialidad(): array{
+        return array(
+            1 => array(
+                'Id'          => '1',
+                'Descripcion' => 'Ampliacion',
+                'Borrado'     => '0',
+            ),
+            2 => array(
+                'Id'          => '2',
+                'Descripcion' => 'Andador',
+                'Borrado'     => '0',
+            ),
+            3 => array(
+                'Id'          => '3',
+                'Descripcion' => 'Avenida',
+                'Borrado'     => '0',
+            ),
+            4 => array(
+                'Id'          => '4',
+                'Descripcion' => 'Boulevard',
+                'Borrado'     => '0',
+            ),
+            5 => array(
+                'Id'          => '5',
+                'Descripcion' => 'Brecha',
+                'Borrado'     => '0',
+            ),
+            6 => array(
+                'Id'          => '6',
+                'Descripcion' => 'Calle',
+                'Borrado'     => '0',
+            ),
+            7 => array(
+                'Id'          => '7',
+                'Descripcion' => 'Callejon',
+                'Borrado'     => '0',
+            ),
+            8 => array(
+                'Id'          => '8',
+                'Descripcion' => 'Calzada',
+                'Borrado'     => '0',
+            ),
+            9 => array(
+                'Id'          => '9',
+                'Descripcion' => 'Camino',
+                'Borrado'     => '0',
+            ),
+            10 => array(
+                'Id'          => '10',
+                'Descripcion' => 'Carretera',
+                'Borrado'     => '0',
+            ),
+            11 => array(
+                'Id'          => '11',
+                'Descripcion' => 'Cerrada',
+                'Borrado'     => '0',
+            ),
+            12 => array(
+                'Id'          => '12',
+                'Descripcion' => 'Circuito',
+                'Borrado'     => '0',
+            ),
+            13 => array(
+                'Id'          => '13',
+                'Descripcion' => 'Circunvalacion',
+                'Borrado'     => '0',
+            ),
+            14 => array(
+                'Id'          => '14',
+                'Descripcion' => 'Continuacion',
+                'Borrado'     => '0',
+            ),
+            15 => array(
+                'Id'          => '15',
+                'Descripcion' => 'Corredor',
+                'Borrado'     => '0',
+            ),
+            16 => array(
+                'Id'          => '16',
+                'Descripcion' => 'Diagonal',
+                'Borrado'     => '0',
+            ),
+            17 => array(
+                'Id'          => '17',
+                'Descripcion' => 'Eje vial',
+                'Borrado'     => '0',
+            ),
+            18 => array(
+                'Id'          => '18',
+                'Descripcion' => 'Pasaje',
+                'Borrado'     => '0',
+            ),
+            19 => array(
+                'Id'          => '19',
+                'Descripcion' => 'Peatonal',
+                'Borrado'     => '0',
+            ),
+            20 => array(
+                'Id'          => '20',
+                'Descripcion' => 'Periferico',
+                'Borrado'     => '0',
+            ),
+            21 => array(
+                'Id'          => '21',
+                'Descripcion' => 'Privada',
+                'Borrado'     => '0',
+            ),
+            22 => array(
+                'Id'          => '22',
+                'Descripcion' => 'Prolongacion',
+                'Borrado'     => '0',
+            ),
+            23 => array(
+                'Id'          => '23',
+                'Descripcion' => 'Retorno',
+                'Borrado'     => '0',
+            ),
+            24 => array(
+                'Id'          => '24',
+                'Descripcion' => 'Terraceria',
+                'Borrado'     => '0',
+            ),
+            25 => array(
+                'Id'          => '25',
+                'Descripcion' => 'Vereda',
+                'Borrado'     => '0',
+            ),
+            26 => array(
+                'Id'          => '26',
+                'Descripcion' => 'Viaducto',
+                'Borrado'     => '0',
+            ),
+        );
 
+    }
     public function GetCatSexo(): array{
         return array(
             0 => array(

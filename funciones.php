@@ -1,5 +1,6 @@
 <?php
-
+include 'Catalogo.php';
+$catalogo = new Catalogo();
 function getNumeroArchivos()
 {
 
@@ -29,7 +30,7 @@ function generaNumeroEmpleado()
     return $numeroEmpleado;
 }
 
-function guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $numeroEmpleado)
+function guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado)
 {
 
     //almacenar datos en un arreglo
@@ -39,6 +40,7 @@ function guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo,
         'nombre' => $nombre,
         'sexo' => $sexo,
         'fechaNacimento' => $fechaNacimiento,
+        'fotografia'=> $fotografia,  
         'numeroEmpleado' => $numeroEmpleado
     );
 
@@ -48,7 +50,79 @@ function guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo,
         $jsonEmpleado = json_encode($empleado);
 
         //guardar archivo en carpeta
-        $rutaArchivo = 'C:/xampp/htdocs/EjercicioReclutamiento/EmpleadoData/' . $numeroEmpleado . '.json';
-        file_put_contents($rutaArchivo, $jsonEmpleado);
+        $rutaArchivoData = 'C:/xampp/htdocs/EjercicioReclutamiento/EmpleadoData/' . $numeroEmpleado . '.json';
+        file_put_contents($rutaArchivoData, $jsonEmpleado);
+
+        //guardar imagen en img
+        $rutaArchivoImg = 'C:/xampp/htdocs/EjercicioReclutamiento/img/'. $numeroEmpleado.'.png';
+        move_uploaded_file($fotografia, $rutaArchivoImg);
     }
 }
+
+//si no se selecciono una fotografia, se pone silueta.png como default
+function revisarFotografia($fotografia){
+
+    //si no se tiene una imagen guardada por el post, se le dan los valores de silueta.png
+    if(strlen($fotografia["tmp_name"]) == 0){
+        echo "se entro en revisarFotografia()";
+        $fotografia["name"] = "silueta.png";
+       // $fotografia["full_path"] = "silueta.png";
+      //  $fotografia["type"] = "image\/png";
+      //  $fotografia["tmp_name"] = "C:\\xampp\\htdocs\\EjercicioReclutamiento\\img\\silueta.png";
+      //  $fotografia["size"] = getimagesize("C:\\xampp\\htdocs\\EjercicioReclutamiento\\img\\silueta.png");
+    }
+}
+
+function crearSelect($datoABuscar){
+    global $catalogo;
+    $arreglo = array();
+
+        switch($datoABuscar){
+            case 'sexo':
+                $arreglo = $catalogo->GetCatSexo();
+                break;
+            case 'estadoCivil':
+               $arreglo = $catalogo->GetCatEstadoCivil();
+                break;
+            case 'tipoSangre':
+                $arreglo = $catalogo->GetCatTipoSangre();
+                break;
+            case 'complexion':
+                $arreglo = $catalogo->GetCatComplexion();
+                break;
+            case 'discapacidad':
+                $arreglo = $catalogo->GetCatDsicapacidad();
+                break;
+            case 'pais':
+                $arreglo = $catalogo->GetCatPais();
+                break;
+            case 'estado':
+                $arreglo = $catalogo->GetCatEstado();
+                break;
+            case 'municipio':
+                $arreglo = $catalogo->GetCatMunicipio();
+                break;
+            case 'localidad':
+                $arreglo = $catalogo->GetCatLocalidad();
+                break;
+            case 'colonia':
+                $arreglo = $catalogo->GetCatColonia();
+                break;
+            case 'tipoVialidad':
+                $arreglo = $catalogo->GetCatVialidad();
+        }
+
+        //tenemos un arreglo que contiene arreglos
+        foreach ($arreglo as $opciones) {
+            $valor = $opciones['Descripcion'];
+            echo "<option value=\"$valor\">$valor</option>";
+        }
+
+    }
+    
+
+    
+
+
+
+?>
