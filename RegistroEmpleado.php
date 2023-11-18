@@ -168,7 +168,75 @@
         <input type="number" id="numeroInterior" name="numeroInterior" minlength="5" maxlength="10">
     </div>
 
-     <!-- Estudios -->
+    
+    <!-- Estudios -->
+    <div>
+        <h3>Estudios:</h3>
+        <form action="RegistroEmpleado.php" method="post">
+            <div id="studies-container">
+                <!-- aqui se agregan o quitan estudios -->
+            </div>
+
+            <button type="button" id="add-study-btn" onclick="agregarEstudio()">Agregar Estudio</button>
+
+            <input type="submit" value="Submit">
+        </form>
+
+        <script>
+            var studyCount= 0;
+
+            function agregarEstudio() {
+                var container = document.getElementById('studies-container');
+                var newStudyDiv = document.createElement('div');
+                newStudyDiv.innerHTML = `
+            <div class="study-container">
+                <label for="escuela">Escuela:</label>
+                <input type="text" name="escuela" required>
+
+                <label for="gradoDeEstudios">Grado de estudios:</label>
+                <select name="gradoDeEstudios" id="gradoDeEstudios">
+                        <?php
+                        crearSelect("gradoDeEstudios");
+                        ?>
+                        </select>
+
+                <label for="fechaInicio">Fecha de inicio:</label>
+                <input type="date" name="fechaInicio" required>
+
+                <label for="fechaFin">Fecha de Fin:</label>
+                <input type="date" name="fechaFin" required>
+
+                <button onclick="quitarEstudio(this)">Eliminar Estudio</button>
+
+            </div>
+        `;
+                //Cambiar el ID del nuevo div para que sea unico
+                studyCount++;
+                var studyID = 'studyContainer'+ studyCount;
+                newStudyDiv.id = studyID;
+
+                container.appendChild(newStudyDiv);
+            }
+
+            function quitarEstudio(boton) {
+                var container = document.getElementById('studies-container');
+                var studyDiv = boton.parentNode.parentNode.id;
+
+                var studyDiv = document.getElementById(studyDiv);
+                
+                //se elimina el div con su contenido 
+                container.removeChild(studyDiv);
+                
+            }
+        </script>
+
+    </div>
+
+
+
+
+
+
 
     <script>
         function mostrarPreviewPonerDefault() {
