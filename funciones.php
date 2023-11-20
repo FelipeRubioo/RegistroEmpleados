@@ -1,5 +1,6 @@
 <?php
 include 'Catalogo.php';
+
 $catalogo = new Catalogo();
 
 function getNumeroArchivos()
@@ -92,6 +93,16 @@ function guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo,
     }
 }
 
+function borrarEmpleado($numeroEmpleado)
+{
+    $rutaArchivo = 'C:/xampp/htdocs/EjercicioReclutamiento/EmpleadoData/' . $numeroEmpleado . '.json';
+    // se elimina el empleado
+    if (unlink($rutaArchivo)) {
+        echo 'se elimino el empleado.';
+    } else {
+        echo 'no se puedo eliminar el empleado';
+    }
+}
 function obtenerEmpleado($numeroEmpleado)
 {
 
@@ -140,7 +151,8 @@ function obtenerEmpleado($numeroEmpleado)
     $gradoDeEstudios = $datosEmpleado->gradoDeEstudios;
     $fechaInicio = $datosEmpleado->fechaInicio;
     $fechaFin = $datosEmpleado->fechaFin;
-    //obtener datos y almacenarlos en un arreglo
+    
+    //guardar los datos en un arreglo y regresarlo
     $empleado = crearArregloEmpleado($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado, $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion, $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $escuela, $gradoDeEstudios, $fechaInicio, $fechaFin);
     return $empleado;
 }
@@ -148,16 +160,6 @@ function obtenerEmpleado($numeroEmpleado)
 //si no se selecciono una fotografia, se pone silueta.png como default
 function revisarFotografia($fotografia)
 {
-
-    //si no se tiene una imagen guardada por el post, se le dan los valores de silueta.png
-    if (strlen($fotografia["tmp_name"]) == 0) {
-        echo "se entro en revisarFotografia()";
-        $fotografia["name"] = "silueta.png";
-        // $fotografia["full_path"] = "silueta.png";
-        //  $fotografia["type"] = "image\/png";
-        //  $fotografia["tmp_name"] = "C:\\xampp\\htdocs\\EjercicioReclutamiento\\img\\silueta.png";
-        //  $fotografia["size"] = getimagesize("C:\\xampp\\htdocs\\EjercicioReclutamiento\\img\\silueta.png");
-    }
 }
 
 function crearSelect($datoABuscar)

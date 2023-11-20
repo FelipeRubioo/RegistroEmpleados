@@ -27,10 +27,10 @@
     <h3>Datos generales:</h3>
     <form id="formDatosGenerales" action="RegistroEmpleado.php" method="post" enctype="multipart/form-data">
         <label for="apellidoPaterno">Apellido Paterno:</label>
-        <input type="text" id="apellidoPaterno" name="apellidoPaterno" pattern="[A-Za-z]+" title="Escriba un apellido valido, solo letras" maxlength="20" required>
+        <input type="text" id="apellidoPaterno" name="apellidoPaterno" pattern="[A-Za-z ]+" title="Escriba un apellido valido, solo letras" maxlength="20" required>
 
         <label for="apellidoMaterno">Apellido Materno:</label>
-        <input type="text" id="apellidoMaterno" name="apellidoMaterno" pattern="[A-Za-z]+" title="Escriba un apellido valido, solo letras" maxlength="20" required>
+        <input type="text" id="apellidoMaterno" name="apellidoMaterno" pattern="[A-Za-z ]+" title="Escriba un apellido valido, solo letras" maxlength="20" required>
 
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" pattern="[A-Za-z ]+" title="Escriba un nombre valido, solo letras" maxlength="30" required>
@@ -155,8 +155,6 @@
         <label for="numeroInterior">Numero interior:</label>
         <input type="number" id="numeroInterior" name="numeroInterior" minlength="5" maxlength="10">
 
-
-
         <!-- Estudios -->
 
         <h3>Estudios:</h3>
@@ -251,24 +249,17 @@
 
     <script>
         function probarFuncion() {
-            // Get the current URL
+            // obtiene el url actual
             var currentUrl = window.location.href;
-
-            console.log("currentURL: " + currentUrl);
-            
-            // Extract the number from the URL (assuming it's the last part of the path)
+            // obtiene el numero de empleado del url, asumiendo que es el ultimo elemento del url
             var matches = currentUrl.match(/\/(\d+)$/);
-            console.log("matches: " +matches)
+            //si hay un numero al final de la URL se hace el redirect
             if (matches) {
                 var number = matches[1];
                 
-                console.log("number:" +number);
-                // Construct the new URL
+                // se crea el nuevo url (con el numero de empleado al final)
                 var newUrl = 'http://localhost/ConsultarEmpleado.php?variable=' + number;
-
-                console.log("newurl:" + newUrl);
-
-                // Redirect to the new URL
+                // redirecciona al nuevo url
                 window.location.replace(newUrl);
             }
         }
@@ -276,11 +267,9 @@
     <?php
     //obtener datos del formulario
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        echo "se entro a la funcion del post";
-
+        
         //Datos generales
         if (isset($_POST["apellidoPaterno"])) {
-            echo "se entro al post de datos generales";
             $apellidoPaterno = $_POST["apellidoPaterno"];
             $apellidoMaterno = $_POST["apellidoMaterno"];
             $nombre = $_POST["nombre"];
@@ -289,7 +278,6 @@
             $fotografia = $_FILES["fotografia"];
 
             //Datos adicionales
-            echo "se entro al post de datos adicionales";
             $curp = $_POST["curp"];
             $rfc = $_POST["rfc"];
             $estadoCivil = $_POST["estadoCivil"];
@@ -301,7 +289,7 @@
 
 
             //Domicilio
-            echo "se entro al post de domicilio";
+            
             $pais = $_POST["pais"];
             $estado = $_POST["estado"];
             $municipio = $_POST["municipio"];
@@ -314,55 +302,18 @@
             $numeroInterior = $_POST["numeroInterior"];
 
             //estudios
-            echo "se entro al post de estudios";
+            
             $escuela = $_POST["escuela"];
             $gradoDeEstudios = $_POST["gradoDeEstudios"];
             $fechaInicio = $_POST["fechaInicio"];
             $fechaFin = $_POST["fechaFin"];
+
+            $numeroEmpleado = generaNumeroEmpleado();
+            guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado , $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion , $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $escuela, $gradoDeEstudios, $fechaInicio, $fechaFin);
         }
     }
 
-    //redireccionamiento si ponen id del empleado en el url 
-
-
-    //Datos Generales
-    echo "apellidoPaterno: $apellidoPaterno <br>";
-    echo "apellidoMaterno: $apellidoMaterno <br>";
-    echo "nombre: $nombre <br>";
-    echo "sexo: $sexo <br>";
-    echo "fechaNacimiento: $fechaNacimiento <br>";
-    echo "fotografia: $fotografia <br>";
-
-    //Datos adicionales
-    echo "CURP: $curp <br>";
-    echo "rfc: $rfc <br>";
-    echo "estadoCivil: $estadoCivil <br>";
-    echo "tipoSangre: $tipoSangre <br>";
-    echo "estatura: $estatura <br>";
-    echo "peso: $peso <br>";
-    echo "complexion: $complexion <br>";
-    echo "discapacidad: $discapacidad <br>";
-
-    //Domicilio
-    echo "pais: $pais <br>";
-    echo "estado: $estado <br>";
-    echo "municipio: $municipio <br>";
-    echo "localidad: $localidad <br>";
-    echo "colonia: $colonia <br>";
-    echo "codigoPostal: $codigoPostal <br>";
-    echo "tipoVialidad: $tipoVialidad <br>";
-    echo "nombreVialidad: $nombreVialidad <br>";
-    echo "numeroExterior: $numeroExterior <br>";
-    echo "numeroInterior: $numeroInterior <br>";
-
-    //Estudios
-    echo "escuela: $escuela <br>";
-    echo "gradoDeEstudios: $gradoDeEstudios <br>";
-    echo "fechaInicio: $fechaInicio <br>";
-    echo "fechaFin: $fechaFin <br>";
-
-    $numeroEmpleado = generaNumeroEmpleado();
-    guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado , $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion , $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $escuela, $gradoDeEstudios, $fechaInicio, $fechaFin);
+    
 
     
     ?>

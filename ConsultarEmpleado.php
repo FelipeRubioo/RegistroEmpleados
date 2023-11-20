@@ -17,10 +17,8 @@
     $numeroEmpleado = $_GET['variable'];
     $empleado = obtenerEmpleado($numeroEmpleado);
     ?>
-    
-    <form action="EditarEmpleado" method="POST">
 
-        <input type="hidden" id="idVehiculo" name="idVehiculo">
+    <form action=<?php echo $_SERVER['PHP_SELF']."?variable=".$numeroEmpleado; ?> method="POST">
 
         <!-- Datos Generales-->
         <h3>Datos generales:</h3>
@@ -47,10 +45,10 @@
         <h3>Datos adicionales:</h3>
 
         <label for="curp">CURP:</label>
-        <input value=<?php echo json_encode($empleado['curp']); ?> type="text" id="curp" name="curp" maxlength="18" required>
+        <input value=<?php echo json_encode($empleado['curp']); ?> type="text" id="curp" name="curp" minlength="18" maxlength="18" required>
 
         <label for="RFC">RFC:</label>
-        <input value=<?php echo json_encode($empleado['rfc']); ?> type="text" id="rfc" name="rfc" maxlength="13" required>
+        <input value=<?php echo json_encode($empleado['rfc']); ?> type="text" id="rfc" name="rfc" minlength="13" maxlength="13" required>
         <span class="help-text">13 caracteres</span>
 
         <label for="estadoCivil">Estado civil:</label>
@@ -144,38 +142,146 @@
         <label for="numeroInterior">Numero interior:</label>
         <input value=<?php echo json_encode($empleado['numeroInterior']); ?> type="number" id="numeroInterior" name="numeroInterior" minlength="5" maxlength="10">
 
-        <script>
-            function activarSelects() {
-                //seleccionar opcion en distintos selects
-                seleccionarOpcion(<?php echo json_encode($empleado['sexo']); ?>, "sexo");
-                seleccionarOpcion(<?php echo json_encode($empleado['estadoCivil']); ?>, "estadoCivil");
-                seleccionarOpcion(<?php echo json_encode($empleado['tipoSangre']); ?>, "tipoSangre");
-                seleccionarOpcion(<?php echo json_encode($empleado['complexion']); ?>, "complexion");
-                seleccionarOpcion(<?php echo json_encode($empleado['discapacidad']); ?>, "discapacidad");
-                seleccionarOpcion(<?php echo json_encode($empleado['pais']); ?>, "pais");
-                seleccionarOpcion(<?php echo json_encode($empleado['estado']); ?>, "estado");
-                seleccionarOpcion(<?php echo json_encode($empleado['municipio']); ?>, "municipio");
-                seleccionarOpcion(<?php echo json_encode($empleado['localidad']); ?>, "localidad");
-                seleccionarOpcion(<?php echo json_encode($empleado['colonia']); ?>, "colonia");
-                seleccionarOpcion(<?php echo json_encode($empleado['tipoVialidad']); ?>, "tipoVialidad");
+        <!-- Estudios -->
+        <h3>Estudios:</h3>
+        <div id="studies-container">
+            <?php
                 
-            }
+            ?>
+            <!-- aqui se agregan o quitan estudios -->
+        </div>
 
-            function seleccionarOpcion(opcion, nombreSelect) {
-                select = document.getElementById(nombreSelect)
-                for (let i = 0; i < select.options.length; i++) {
-                    if (opcion == select.options[i].value) {
-                        select.options[i].selected = true;
-                    }
+        <button type="button" id="add-study-btn" onclick="agregarEstudio()">Agregar Estudio</button>
 
-                }
+        <script>
+        var studyCount = 0;
 
-            }
-        </script>
+        function agregarEstudio() {
+            var container = document.getElementById('studies-container');
+            var newStudyDiv = document.createElement('div');
+            newStudyDiv.innerHTML = `
+            <div class="study-container">
+                <label for="escuela">Escuela:</label>
+                <input type="text" name="escuela" maxlength="30" required>
 
+                <label for="gradoDeEstudios">Grado de estudios:</label>
+                <select name="gradoDeEstudios" id="gradoDeEstudios" required>
+                        <?php
+                        crearSelect("gradoDeEstudios");
+                        ?>
+                        </select>
 
-        <input type="submit">
+                <label for="fechaInicio">Fecha de inicio:</label>
+                <input type="date" name="fechaInicio" required>
+
+                <label for="fechaFin">Fecha de Fin:</label>
+                <input type="date" name="fechaFin" required>
+
+                <button onclick="quitarEstudio(this)">Eliminar Estudio</button>
+
+            </div>
+        `;
+            //Cambiar el ID del nuevo div para que sea unico
+            studyCount++;
+            var studyID = 'studyContainer' + studyCount;
+            newStudyDiv.id = studyID;
+
+            container.appendChild(newStudyDiv);
+        }
+
+        function quitarEstudio(boton) {
+            var container = document.getElementById('studies-container');
+            var studyDiv = boton.parentNode.parentNode.id;
+
+            var studyDiv = document.getElementById(studyDiv);
+
+            //se elimina el div con su contenido 
+            container.removeChild(studyDiv);
+
+        }
+    </script>
+        <button type="submit" name="formActualizar">Guardar empleado</button>
+        <button type="submit" name="formBorrar">Eliminar empleado</button>
     </form>
+
+    <script>
+        function activarSelects() {
+            //seleccionar opcion en distintos selects
+            seleccionarOpcion(<?php echo json_encode($empleado['sexo']); ?>, "sexo");
+            seleccionarOpcion(<?php echo json_encode($empleado['estadoCivil']); ?>, "estadoCivil");
+            seleccionarOpcion(<?php echo json_encode($empleado['tipoSangre']); ?>, "tipoSangre");
+            seleccionarOpcion(<?php echo json_encode($empleado['complexion']); ?>, "complexion");
+            seleccionarOpcion(<?php echo json_encode($empleado['discapacidad']); ?>, "discapacidad");
+            seleccionarOpcion(<?php echo json_encode($empleado['pais']); ?>, "pais");
+            seleccionarOpcion(<?php echo json_encode($empleado['estado']); ?>, "estado");
+            seleccionarOpcion(<?php echo json_encode($empleado['municipio']); ?>, "municipio");
+            seleccionarOpcion(<?php echo json_encode($empleado['localidad']); ?>, "localidad");
+            seleccionarOpcion(<?php echo json_encode($empleado['colonia']); ?>, "colonia");
+            seleccionarOpcion(<?php echo json_encode($empleado['tipoVialidad']); ?>, "tipoVialidad");
+
+        }
+
+        function seleccionarOpcion(opcion, nombreSelect) {
+            select = document.getElementById(nombreSelect)
+            for (let i = 0; i < select.options.length; i++) {
+                if (opcion == select.options[i].value) {
+                    select.options[i].selected = true;
+                }
+            }
+        }
+    </script>
+
+<?php
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    
+        if (isset($_POST['formActualizar'])) {
+            //actualizar empleado
+            $apellidoPaterno = $_POST["apellidoPaterno"];
+            $apellidoMaterno = $_POST["apellidoMaterno"];
+            $nombre = $_POST["nombre"];
+            $sexo = $_POST["sexo"];
+            $fechaNacimiento = $_POST["fechaNacimiento"];
+            $fotografia = $_FILES["fotografia"];
+
+            //Datos adicionales
+            $curp = $_POST["curp"];
+            $rfc = $_POST["rfc"];
+            $estadoCivil = $_POST["estadoCivil"];
+            $tipoSangre = $_POST["tipoSangre"];
+            $estatura = $_POST["estatura"];
+            $peso = $_POST["peso"];
+            $complexion = $_POST["complexion"];
+            $discapacidad = $_POST["discapacidad"];
+
+
+            //Domicilio
+            $pais = $_POST["pais"];
+            $estado = $_POST["estado"];
+            $municipio = $_POST["municipio"];
+            $localidad = $_POST["localidad"];
+            $colonia = $_POST["colonia"];
+            $codigoPostal = $_POST["codigoPostal"];
+            $tipoVialidad = $_POST["tipoVialidad"];
+            $nombreVialidad = $_POST["nombreVialidad"];
+            $numeroExterior = $_POST["numeroExterior"];
+            $numeroInterior = $_POST["numeroInterior"];
+
+            //estudios
+            $escuela = $_POST["escuela"];
+            $gradoDeEstudios = $_POST["gradoDeEstudios"];
+            $fechaInicio = $_POST["fechaInicio"];
+            $fechaFin = $_POST["fechaFin"];
+            guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado , $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion , $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $escuela, $gradoDeEstudios, $fechaInicio, $fechaFin);
+       
+        }elseif (isset($_POST['formBorrar'])) {
+            borrarEmpleado($numeroEmpleado);   
+       }
+    
+    }
+?>
+
+
 </body>
 
 </html>
