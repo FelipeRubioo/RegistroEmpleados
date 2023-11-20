@@ -4542,42 +4542,46 @@ class Catalogo {
         return array(
             0 => array(
                 'Id'          => '1',
-                'Descripcion' => 'Autismo',
+                'Descripcion' => 'Ninguna',
             ),
             1 => array(
                 'Id'          => '2',
-                'Descripcion' => 'Enfermedades crónicas',
+                'Descripcion' => 'Autismo',
             ),
             2 => array(
                 'Id'          => '3',
-                'Descripcion' => 'Deficiencia auditiva y sordera',
+                'Descripcion' => 'Enfermedades crónicas',
             ),
             3 => array(
                 'Id'          => '4',
-                'Descripcion' => 'Discapacidad intelectual',
+                'Descripcion' => 'Deficiencia auditiva y sordera',
             ),
             4 => array(
                 'Id'          => '5',
-                'Descripcion' => 'Dificultades del aprendizaje',
+                'Descripcion' => 'Discapacidad intelectual',
             ),
             5 => array(
                 'Id'          => '6',
-                'Descripcion' => 'Pérdida de la memoria',
+                'Descripcion' => 'Dificultades del aprendizaje',
             ),
             6 => array(
                 'Id'          => '7',
-                'Descripcion' => 'Enfermedades mentales',
+                'Descripcion' => 'Pérdida de la memoria',
             ),
             7 => array(
                 'Id'          => '8',
-                'Descripcion' => 'Discapacidad física',
+                'Descripcion' => 'Enfermedades mentales',
             ),
             8 => array(
                 'Id'          => '9',
-                'Descripcion' => 'Trastornos del habla y del lenguaje',
+                'Descripcion' => 'Discapacidad física',
             ),
             9 => array(
                 'Id'          => '10',
+                'Descripcion' => 'Trastornos del habla y del lenguaje',
+            ),
+            10 => array(
+                'Id'          => '11',
                 'Descripcion' => 'Deficiencia visual y ceguera',
             ),
         );

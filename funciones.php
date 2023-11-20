@@ -1,6 +1,7 @@
 <?php
 include 'Catalogo.php';
 $catalogo = new Catalogo();
+
 function getNumeroArchivos()
 {
 
@@ -30,7 +31,8 @@ function generaNumeroEmpleado()
     return $numeroEmpleado;
 }
 
-function guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado)
+
+function crearArregloEmpleado($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado, $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion, $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $escuela, $gradoDeEstudios, $fechaInicio, $fechaFin)
 {
 
     //almacenar datos en un arreglo
@@ -39,13 +41,44 @@ function guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo,
         'apellidoMaterno' => $apellidoMaterno,
         'nombre' => $nombre,
         'sexo' => $sexo,
-        'fechaNacimento' => $fechaNacimiento,
-        'fotografia'=> $fotografia,  
-        'numeroEmpleado' => $numeroEmpleado
+        'fechaNacimiento' => $fechaNacimiento,
+        'fotografia' => $fotografia,
+        'numeroEmpleado' => $numeroEmpleado,
+        'curp' => $curp,
+        'rfc' => $rfc,
+        'estadoCivil' => $estadoCivil,
+        'tipoSangre' => $tipoSangre,
+        'estatura' => $estatura,
+        'peso' => $peso,
+        'complexion' => $complexion,
+        'discapacidad' => $discapacidad,
+        'pais' => $pais,
+        'estado' => $estado,
+        'municipio' => $municipio,
+        'localidad' => $localidad,
+        'colonia' => $colonia,
+        'codigoPostal' => $codigoPostal,
+        'tipoVialidad' => $tipoVialidad,
+        'nombreVialidad' => $nombreVialidad,
+        'numeroExterior' => $numeroExterior,
+        'numeroInterior' => $numeroInterior,
+        'escuela' => $escuela,
+        'gradoDeEstudios' => $gradoDeEstudios,
+        'fechaInicio' => $fechaInicio,
+        'fechaFin' => $fechaFin
     );
 
+    return $empleado;
+}
+
+
+function guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado, $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion, $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $escuela, $gradoDeEstudios, $fechaInicio, $fechaFin)
+{
+
+    $empleado = crearArregloEmpleado($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado, $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion, $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $escuela, $gradoDeEstudios, $fechaInicio, $fechaFin);
+
     //solo se guarda un archivo si se llenaron todos los campos del formulario
-    if ($empleado['apellidoPaterno'] != null ) {
+    if ($apellidoPaterno != null) {
         //guardar arreglo en formato JSON
         $jsonEmpleado = json_encode($empleado);
 
@@ -54,75 +87,126 @@ function guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo,
         file_put_contents($rutaArchivoData, $jsonEmpleado);
 
         //guardar imagen en img
-        $rutaArchivoImg = 'C:/xampp/htdocs/EjercicioReclutamiento/img/'. $numeroEmpleado.'.png';
+        $rutaArchivoImg = 'C:/xampp/htdocs/EjercicioReclutamiento/img/' . $numeroEmpleado . '.png';
         move_uploaded_file($fotografia, $rutaArchivoImg);
     }
 }
 
+function obtenerEmpleado($numeroEmpleado)
+{
+
+    $rutaArchivo = 'C:/xampp/htdocs/EjercicioReclutamiento/EmpleadoData/' . $numeroEmpleado . '.json';
+
+    //obtener carpeta
+    $archivoJson = file_get_contents($rutaArchivo);
+
+    //leer archivo JSON
+    $datosEmpleado = json_decode($archivoJson);
+
+    //obtener datos del archivo
+    //Datos generales
+    $apellidoPaterno = $datosEmpleado->apellidoPaterno;
+    $apellidoMaterno = $datosEmpleado->apellidoMaterno;
+    $nombre = $datosEmpleado->nombre;
+    $sexo = $datosEmpleado->sexo;
+    $fechaNacimiento = $datosEmpleado->fechaNacimiento;
+    $fotografia = $datosEmpleado->fotografia;
+    $numeroEmpleado = $datosEmpleado->numeroEmpleado;
+
+    //Datos adicionales
+    $curp = $datosEmpleado->curp;
+    $rfc = $datosEmpleado->rfc;
+    $estadoCivil = $datosEmpleado->estadoCivil;
+    $tipoSangre = $datosEmpleado->tipoSangre;
+    $estatura = $datosEmpleado->estatura;
+    $peso = $datosEmpleado->peso;
+    $complexion = $datosEmpleado->complexion;
+    $discapacidad = $datosEmpleado->discapacidad;
+
+    //Domicilio
+    $pais = $datosEmpleado->pais;
+    $estado = $datosEmpleado->estado;
+    $municipio = $datosEmpleado->municipio;
+    $localidad = $datosEmpleado->localidad;
+    $colonia = $datosEmpleado->colonia;
+    $codigoPostal = $datosEmpleado->codigoPostal;
+    $tipoVialidad = $datosEmpleado->tipoVialidad;
+    $nombreVialidad = $datosEmpleado->nombreVialidad;
+    $numeroExterior = $datosEmpleado->numeroExterior;
+    $numeroInterior = $datosEmpleado->numeroInterior;
+
+    //Estudios 
+    $escuela = $datosEmpleado->escuela;
+    $gradoDeEstudios = $datosEmpleado->gradoDeEstudios;
+    $fechaInicio = $datosEmpleado->fechaInicio;
+    $fechaFin = $datosEmpleado->fechaFin;
+    //obtener datos y almacenarlos en un arreglo
+    $empleado = crearArregloEmpleado($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado, $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion, $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $escuela, $gradoDeEstudios, $fechaInicio, $fechaFin);
+    return $empleado;
+}
+
 //si no se selecciono una fotografia, se pone silueta.png como default
-function revisarFotografia($fotografia){
+function revisarFotografia($fotografia)
+{
 
     //si no se tiene una imagen guardada por el post, se le dan los valores de silueta.png
-    if(strlen($fotografia["tmp_name"]) == 0){
+    if (strlen($fotografia["tmp_name"]) == 0) {
         echo "se entro en revisarFotografia()";
         $fotografia["name"] = "silueta.png";
-       // $fotografia["full_path"] = "silueta.png";
-      //  $fotografia["type"] = "image\/png";
-      //  $fotografia["tmp_name"] = "C:\\xampp\\htdocs\\EjercicioReclutamiento\\img\\silueta.png";
-      //  $fotografia["size"] = getimagesize("C:\\xampp\\htdocs\\EjercicioReclutamiento\\img\\silueta.png");
+        // $fotografia["full_path"] = "silueta.png";
+        //  $fotografia["type"] = "image\/png";
+        //  $fotografia["tmp_name"] = "C:\\xampp\\htdocs\\EjercicioReclutamiento\\img\\silueta.png";
+        //  $fotografia["size"] = getimagesize("C:\\xampp\\htdocs\\EjercicioReclutamiento\\img\\silueta.png");
     }
 }
 
-function crearSelect($datoABuscar){
+function crearSelect($datoABuscar)
+{
     global $catalogo;
     $arreglo = array();
 
-        switch($datoABuscar){
-            case 'sexo':
-                $arreglo = $catalogo->GetCatSexo();
-                break;
-            case 'estadoCivil':
-               $arreglo = $catalogo->GetCatEstadoCivil();
-                break;
-            case 'tipoSangre':
-                $arreglo = $catalogo->GetCatTipoSangre();
-                break;
-            case 'complexion':
-                $arreglo = $catalogo->GetCatComplexion();
-                break;
-            case 'discapacidad':
-                $arreglo = $catalogo->GetCatDsicapacidad();
-                break;
-            case 'pais':
-                $arreglo = $catalogo->GetCatPais();
-                break;
-            case 'estado':
-                $arreglo = $catalogo->GetCatEstado();
-                break;
-            case 'municipio':
-                $arreglo = $catalogo->GetCatMunicipio();
-                break;
-            case 'localidad':
-                $arreglo = $catalogo->GetCatLocalidad();
-                break;
-            case 'colonia':
-                $arreglo = $catalogo->GetCatColonia();
-                break;
-            case 'tipoVialidad':
-                $arreglo = $catalogo->GetCatVialidad();
-        }
-
-        //tenemos un arreglo que contiene arreglos
-        foreach ($arreglo as $opciones) {
-            $valor = $opciones['Descripcion'];
-            echo "<option value=\"$valor\">$valor</option>";
-        }
-
+    switch ($datoABuscar) {
+        case 'sexo':
+            $arreglo = $catalogo->GetCatSexo();
+            break;
+        case 'estadoCivil':
+            $arreglo = $catalogo->GetCatEstadoCivil();
+            break;
+        case 'tipoSangre':
+            $arreglo = $catalogo->GetCatTipoSangre();
+            break;
+        case 'complexion':
+            $arreglo = $catalogo->GetCatComplexion();
+            break;
+        case 'discapacidad':
+            $arreglo = $catalogo->GetCatDsicapacidad();
+            break;
+        case 'pais':
+            $arreglo = $catalogo->GetCatPais();
+            break;
+        case 'estado':
+            $arreglo = $catalogo->GetCatEstado();
+            break;
+        case 'municipio':
+            $arreglo = $catalogo->GetCatMunicipio();
+            break;
+        case 'localidad':
+            $arreglo = $catalogo->GetCatLocalidad();
+            break;
+        case 'colonia':
+            $arreglo = $catalogo->GetCatColonia();
+            break;
+        case 'tipoVialidad':
+            $arreglo = $catalogo->GetCatVialidad();
+            break;
+        case 'gradoDeEstudios':
+            $arreglo = $catalogo->GetCatGradoEstudio();
+            break;
     }
-    
 
-    
-
-
-
-?>
+    //tenemos un arreglo que contiene arreglos
+    foreach ($arreglo as $opciones) {
+        $valor = $opciones['Descripcion'];
+        echo "<option value=\"$valor\">$valor</option>";
+    }
+}

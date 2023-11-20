@@ -16,104 +16,90 @@
 </head>
 
 
-<body>
+<body onload="probarFuncion()">
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 
     <!-- Form de datos generales  -->
-    
-        <h3>Datos generales:</h3>
-<form id="formDatosGenerales" action="RegistroEmpleado.php" method="post" enctype="multipart/form-data">
-            <label for="apellidoPaterno">Apellido Paterno:</label>
-            <input type="text" id="apellidoPaterno" name="apellidoPaterno" pattern="[A-Za-z]+" title="Escriba un apellido valido, solo letras" maxlength="20" required>
 
-            <label for="apellidoMaterno">Apellido Materno:</label>
-            <input type="text" id="apellidoMaterno" name="apellidoMaterno" pattern="[A-Za-z]+" title="Escriba un apellido valido, solo letras" maxlength="20" required>
+    <h3>Datos generales:</h3>
+    <form id="formDatosGenerales" action="RegistroEmpleado.php" method="post" enctype="multipart/form-data">
+        <label for="apellidoPaterno">Apellido Paterno:</label>
+        <input type="text" id="apellidoPaterno" name="apellidoPaterno" pattern="[A-Za-z]+" title="Escriba un apellido valido, solo letras" maxlength="20" required>
 
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre" pattern="[A-Za-z ]+" title="Escriba un nombre valido, solo letras" maxlength="30" required>
+        <label for="apellidoMaterno">Apellido Materno:</label>
+        <input type="text" id="apellidoMaterno" name="apellidoMaterno" pattern="[A-Za-z]+" title="Escriba un apellido valido, solo letras" maxlength="20" required>
 
-            <label for="sexo">Sexo:</label>
-            <select name="sexo" id="sexo" required>
-                <?php
-                crearSelect("sexo");
-                ?>
-            </select>
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" pattern="[A-Za-z ]+" title="Escriba un nombre valido, solo letras" maxlength="30" required>
 
-            <label for="fechaNacimiento">Fecha de nacimiento:</label>
-            <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
+        <label for="sexo">Sexo:</label>
+        <select name="sexo" id="sexo" required>
+            <?php
+            crearSelect("sexo");
+            ?>
+        </select>
 
-            <label for="fotografia">Seleccione una fotografia:</label>
-            <input type="file" name="fotografia" id="fotografia" accept="image/*" onchange="mostrarPreviewPonerDefault()">
-            <img id="preview" src="#" style="display:none; max-width: 300px; max-height: 300px;">
+        <label for="fechaNacimiento">Fecha de nacimiento:</label>
+        <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
 
-       
-    
+        <label for="fotografia">Seleccione una fotografia:</label>
+        <input type="file" name="fotografia" id="fotografia" accept="image/*" onchange="mostrarPreviewPonerDefault()">
+        <img id="preview" src="#" style="display:none; max-width: 300px; max-height: 300px;">
 
-    <!-- Form de datos adicionales -->
-    
+
+
+
+        <!-- Form de datos adicionales -->
+
         <h3>Datos adicionales:</h3>
-        <!-- <form id="formDatosAdicionales" action="RegistroEmpleado.php" method="post"> -->
-        
-
-            <label for="curp">CURP:</label>
-            <input type="text" id="curp" name="curp" maxlength="18" required>
-
-            <label for="RFC">RFC:</label>
-            <input type="text" id="rfc" name="rfc" maxlength="13" required>
-            <span class="help-text">13 caracteres</span>
-
-            <label for="estadoCivil">Estado civil:</label>
-            <select name="estadoCivil" id="estadoCivil" required>
-                <?php
-                crearSelect("estadoCivil");
-                ?>
-            </select>
-
-            <label for="tipoSangre">Tipo de sangre:</label>
-            <select name="tipoSangre" id="tipoSangre" required>
-                <?php
-                crearSelect("tipoSangre");
-                ?>
-            </select>
-
-            <label for="estatura">Estatura:</label>
-            <input type="number" id="estatura" name="estatura" step="0.01" min="1.40" max="2.30" required>
-
-            <label for="peso">Peso:</label>
-            <input type="number" id="peso" name="peso" step="0.01" min="40" max="150" required>
-
-            <label for="complexion">Complexion:</label>
-            <select name="complexion" id="complexion" required>
-                <?php
-                crearSelect("complexion");
-                ?>
-            </select>
-
-            <label for="discapacidad">Discapacidad:</label>
-            <select name="discapacidad" id="discapacidad" required>
-                <?php
-                crearSelect("discapacidad");
-                ?>
-            </select>
-
-            
-            <!-- <input id="submitDatosAdicionales" type="submit" style="display: none;"> -->
-
-        
-
-
-
-
     
+        <label for="curp">CURP:</label>
+        <input type="text" id="curp" name="curp" maxlength="18" required>
 
-    <!-- Domicilio -->
-    
+        <label for="RFC">RFC:</label>
+        <input type="text" id="rfc" name="rfc" maxlength="13" required>
+        <span class="help-text">13 caracteres</span>
+
+        <label for="estadoCivil">Estado civil:</label>
+        <select name="estadoCivil" id="estadoCivil" required>
+            <?php
+            crearSelect("estadoCivil");
+            ?>
+        </select>
+
+        <label for="tipoSangre">Tipo de sangre:</label>
+        <select name="tipoSangre" id="tipoSangre" required>
+            <?php
+            crearSelect("tipoSangre");
+            ?>
+        </select>
+
+        <label for="estatura">Estatura:</label>
+        <input type="number" id="estatura" name="estatura" step="0.01" min="1.40" max="2.30" required>
+
+        <label for="peso">Peso:</label>
+        <input type="number" id="peso" name="peso" step="0.01" min="40" max="150" required>
+
+        <label for="complexion">Complexion:</label>
+        <select name="complexion" id="complexion" required>
+            <?php
+            crearSelect("complexion");
+            ?>
+        </select>
+
+        <label for="discapacidad">Discapacidad:</label>
+        <select name="discapacidad" id="discapacidad" required>
+            <?php
+            crearSelect("discapacidad");
+            ?>
+        </select>
+
+        <!-- Domicilio -->
+
         <h3>Domicilio:</h3>
-        <!-- <form id="formDomicilio" action="RegistroEmpleado.php" method="post"></form> -->
-        
 
         <label for="pais">País:</label>
         <select name="pais" id="pais" required>
@@ -169,34 +155,30 @@
         <label for="numeroInterior">Numero interior:</label>
         <input type="number" id="numeroInterior" name="numeroInterior" minlength="5" maxlength="10">
 
-        <!-- <input id="submitDomicilio" type="submit" style="display: none;">  -->
-        
-    
 
 
-    <!-- Estudios -->
-    
+        <!-- Estudios -->
+
         <h3>Estudios:</h3>
-        <!-- <form id="formEstudios" action="RegistroEmpleado.php" method="post">-->
-        
-            <div id="studies-container">
-                <!-- aqui se agregan o quitan estudios -->
-            </div>
 
-            <button type="button" id="add-study-btn" onclick="agregarEstudio()">Agregar Estudio</button>
+        <div id="studies-container">
+            <!-- aqui se agregan o quitan estudios -->
+        </div>
 
-            
-             <!-- <input id="submitEstudios" type="submit" style="display: none;">-->
-            
-        <input id="submitDatosGenerales" type="submit" style="display: none;"> 
-</form> 
-        <script>
-            var studyCount = 0;
+        <button type="button" id="add-study-btn" onclick="agregarEstudio()">Agregar Estudio</button>
 
-            function agregarEstudio() {
-                var container = document.getElementById('studies-container');
-                var newStudyDiv = document.createElement('div');
-                newStudyDiv.innerHTML = `
+        <input id="submitDatosGenerales" type="submit" style="display: none;">
+    </form>
+
+    <button onclick="probarFuncion()">Probar funcion</button>
+
+    <script>
+        var studyCount = 0;
+
+        function agregarEstudio() {
+            var container = document.getElementById('studies-container');
+            var newStudyDiv = document.createElement('div');
+            newStudyDiv.innerHTML = `
             <div class="study-container">
                 <label for="escuela">Escuela:</label>
                 <input type="text" name="escuela" maxlength="30" required>
@@ -218,27 +200,27 @@
 
             </div>
         `;
-                //Cambiar el ID del nuevo div para que sea unico
-                studyCount++;
-                var studyID = 'studyContainer' + studyCount;
-                newStudyDiv.id = studyID;
+            //Cambiar el ID del nuevo div para que sea unico
+            studyCount++;
+            var studyID = 'studyContainer' + studyCount;
+            newStudyDiv.id = studyID;
 
-                container.appendChild(newStudyDiv);
-            }
+            container.appendChild(newStudyDiv);
+        }
 
-            function quitarEstudio(boton) {
-                var container = document.getElementById('studies-container');
-                var studyDiv = boton.parentNode.parentNode.id;
+        function quitarEstudio(boton) {
+            var container = document.getElementById('studies-container');
+            var studyDiv = boton.parentNode.parentNode.id;
 
-                var studyDiv = document.getElementById(studyDiv);
+            var studyDiv = document.getElementById(studyDiv);
 
-                //se elimina el div con su contenido 
-                container.removeChild(studyDiv);
+            //se elimina el div con su contenido 
+            container.removeChild(studyDiv);
 
-            }
-        </script>
+        }
+    </script>
 
-    
+
 
     <button id="botonGuardar" name="botonGuardar" onclick="subirForm()"> guardar </button>
 
@@ -267,13 +249,37 @@
         }
     </script>
 
+    <script>
+        function probarFuncion() {
+            // Get the current URL
+            var currentUrl = window.location.href;
+
+            console.log("currentURL: " + currentUrl);
+            
+            // Extract the number from the URL (assuming it's the last part of the path)
+            var matches = currentUrl.match(/\/(\d+)$/);
+            console.log("matches: " +matches)
+            if (matches) {
+                var number = matches[1];
+                
+                console.log("number:" +number);
+                // Construct the new URL
+                var newUrl = 'http://localhost/ConsultarEmpleado.php?variable=' + number;
+
+                console.log("newurl:" + newUrl);
+
+                // Redirect to the new URL
+                window.location.replace(newUrl);
+            }
+        }
+    </script>
     <?php
     //obtener datos del formulario
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "se entro a la funcion del post";
 
         //Datos generales
-        if(isset($_POST["apellidoPaterno"])){
+        if (isset($_POST["apellidoPaterno"])) {
             echo "se entro al post de datos generales";
             $apellidoPaterno = $_POST["apellidoPaterno"];
             $apellidoMaterno = $_POST["apellidoMaterno"];
@@ -294,7 +300,6 @@
             $discapacidad = $_POST["discapacidad"];
 
 
-        
             //Domicilio
             echo "se entro al post de domicilio";
             $pais = $_POST["pais"];
@@ -308,21 +313,18 @@
             $numeroExterior = $_POST["numeroExterior"];
             $numeroInterior = $_POST["numeroInterior"];
 
-        
             //estudios
             echo "se entro al post de estudios";
             $escuela = $_POST["escuela"];
             $gradoDeEstudios = $_POST["gradoDeEstudios"];
             $fechaInicio = $_POST["fechaInicio"];
             $fechaFin = $_POST["fechaFin"];
-
         }
-            
-
-        
-            
-        
     }
+
+    //redireccionamiento si ponen id del empleado en el url 
+
+
     //Datos Generales
     echo "apellidoPaterno: $apellidoPaterno <br>";
     echo "apellidoMaterno: $apellidoMaterno <br>";
@@ -360,29 +362,14 @@
     echo "fechaFin: $fechaFin <br>";
 
     $numeroEmpleado = generaNumeroEmpleado();
-    guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado);
+    guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado , $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion , $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $escuela, $gradoDeEstudios, $fechaInicio, $fechaFin);
 
-
-
-
-
-    //obtener carpeta
-    //  $archivoJson = file_get_contents($rutaArchivo);
-
-    //leer archivo JSON
-    //  $datosEmpleado = json_decode($archivoJson);
-
-    // $apellidoPaternoJSON = $datosEmpleado->apellidoPaterno;
-
+    
     ?>
-
 
 </body>
 
-
 <footer>
-
-
 
 </footer>
 
