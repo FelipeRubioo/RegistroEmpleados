@@ -89,7 +89,8 @@ function guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo,
 
         //guardar imagen en img
         $rutaArchivoImg = 'C:/xampp/htdocs/EjercicioReclutamiento/img/' . $numeroEmpleado . '.png';
-        move_uploaded_file($fotografia, $rutaArchivoImg);
+        $tmpName = $fotografia['tmp_name'];
+        move_uploaded_file($tmpName, $rutaArchivoImg);
     }
 }
 
