@@ -5,6 +5,7 @@
     <?php include 'funciones.php';
 
     ?>
+   <script src="peticion.js"></script> 
     <link rel="stylesheet" href="estilo.css" type="text/css">
     <title>Registro de empleados</title>
     <!-- Required meta tags -->
@@ -25,7 +26,7 @@
     <!-- Form de datos generales  -->
 
     <h3>Datos generales:</h3>
-    <form id="formDatosGenerales" action="RegistroEmpleado.php" method="post" enctype="multipart/form-data">
+    <form id="formRegistro" action="RegistroEmpleado.php" method="post" enctype="multipart/form-data">
         <label for="apellidoPaterno">Apellido Paterno:</label>
         <input type="text" id="apellidoPaterno" name="apellidoPaterno" pattern="[A-Za-z ]+" title="Escriba un apellido valido, solo letras" maxlength="20" required>
 
@@ -165,7 +166,8 @@
 
         <button type="button" id="add-study-btn" onclick="agregarEstudio()">Agregar Estudio</button>
 
-        <input id="submitDatosGenerales" type="submit" style="display: none;">
+        <button type="submit" id="botonSubmit" style="display:none;"></button>
+        <button type="button" id="botonGuardar" >Guardar</button>           
     </form>
 
     <button onclick="probarFuncion()">Probar funcion</button>
@@ -218,10 +220,6 @@
         }
     </script>
 
-
-
-    <button id="botonGuardar" name="botonGuardar" onclick="subirForm()"> guardar </button>
-
     <script>
         function mostrarPreviewPonerDefault() {
             var fotografia = document.getElementById('fotografia');
@@ -242,9 +240,6 @@
             }
         }
 
-        function subirForm() {
-            document.getElementById("submitDatosGenerales").click();
-        }
     </script>
 
     <script>
@@ -287,9 +282,7 @@
             $complexion = $_POST["complexion"];
             $discapacidad = $_POST["discapacidad"];
 
-
             //Domicilio
-            
             $pais = $_POST["pais"];
             $estado = $_POST["estado"];
             $municipio = $_POST["municipio"];

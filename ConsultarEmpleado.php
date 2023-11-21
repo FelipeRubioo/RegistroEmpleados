@@ -2,6 +2,7 @@
 <?php include 'funciones.php';
 
 ?>
+<script src="peticion.js"></script>
 <html lang="en">
 
 <head>
@@ -17,8 +18,8 @@
     $numeroEmpleado = $_GET['variable'];
     $empleado = obtenerEmpleado($numeroEmpleado);
     ?>
-
-    <form action=<?php echo $_SERVER['PHP_SELF']."?variable=".$numeroEmpleado; ?> method="POST">
+    <!-- no se puede poner solo el mismo archivo como action ya que desasparece el numero de empleado, hay que agregarlo al URL-->
+    <form action=<?php echo $_SERVER['PHP_SELF'] . "?variable=" . $numeroEmpleado; ?> method="POST">
 
         <!-- Datos Generales-->
         <h3>Datos generales:</h3>
@@ -146,7 +147,7 @@
         <h3>Estudios:</h3>
         <div id="studies-container">
             <?php
-                
+
             ?>
             <!-- aqui se agregan o quitan estudios -->
         </div>
@@ -154,12 +155,12 @@
         <button type="button" id="add-study-btn" onclick="agregarEstudio()">Agregar Estudio</button>
 
         <script>
-        var studyCount = 0;
+            var studyCount = 0;
 
-        function agregarEstudio() {
-            var container = document.getElementById('studies-container');
-            var newStudyDiv = document.createElement('div');
-            newStudyDiv.innerHTML = `
+            function agregarEstudio() {
+                var container = document.getElementById('studies-container');
+                var newStudyDiv = document.createElement('div');
+                newStudyDiv.innerHTML = `
             <div class="study-container">
                 <label for="escuela">Escuela:</label>
                 <input type="text" name="escuela" maxlength="30" required>
@@ -181,27 +182,30 @@
 
             </div>
         `;
-            //Cambiar el ID del nuevo div para que sea unico
-            studyCount++;
-            var studyID = 'studyContainer' + studyCount;
-            newStudyDiv.id = studyID;
+                //Cambiar el ID del nuevo div para que sea unico
+                studyCount++;
+                var studyID = 'studyContainer' + studyCount;
+                newStudyDiv.id = studyID;
 
-            container.appendChild(newStudyDiv);
-        }
+                container.appendChild(newStudyDiv);
+            }
 
-        function quitarEstudio(boton) {
-            var container = document.getElementById('studies-container');
-            var studyDiv = boton.parentNode.parentNode.id;
+            function quitarEstudio(boton) {
+                var container = document.getElementById('studies-container');
+                var studyDiv = boton.parentNode.parentNode.id;
 
-            var studyDiv = document.getElementById(studyDiv);
+                var studyDiv = document.getElementById(studyDiv);
 
-            //se elimina el div con su contenido 
-            container.removeChild(studyDiv);
+                //se elimina el div con su contenido 
+                container.removeChild(studyDiv);
 
-        }
-    </script>
-        <button type="submit" name="formActualizar">Guardar empleado</button>
-        <button type="submit" name="formBorrar">Eliminar empleado</button>
+            }
+        </script>
+        <button type="submit" id="botonSubmitActualizar" style="display:none;"></button>
+        <button type="button" name="botonActualizar">Guardar</button>
+
+        <button type="submit" id="botonSubmitBorrar" style="display:none;"></button>
+        <button type="button" name="botonBorrar">Eliminar empleado</button>
     </form>
 
     <script>
@@ -231,11 +235,11 @@
         }
     </script>
 
-<?php
+    <?php
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
-        if (isset($_POST['formActualizar'])) {
+
+        if (isset($_POST['botonSubmitActualizar'])) {
             //actualizar empleado
             $apellidoPaterno = $_POST["apellidoPaterno"];
             $apellidoMaterno = $_POST["apellidoMaterno"];
@@ -272,14 +276,12 @@
             $gradoDeEstudios = $_POST["gradoDeEstudios"];
             $fechaInicio = $_POST["fechaInicio"];
             $fechaFin = $_POST["fechaFin"];
-            guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado , $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion , $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $escuela, $gradoDeEstudios, $fechaInicio, $fechaFin);
-       
-        }elseif (isset($_POST['formBorrar'])) {
-            borrarEmpleado($numeroEmpleado);   
-       }
-    
+            guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado, $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion, $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $escuela, $gradoDeEstudios, $fechaInicio, $fechaFin);
+        } elseif (isset($_POST['formBorrar'])) {
+            borrarEmpleado($numeroEmpleado);
+        }
     }
-?>
+    ?>
 
 
 </body>
