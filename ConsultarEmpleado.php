@@ -201,11 +201,11 @@
 
             }
         </script>
-        <button type="submit" id="botonSubmitActualizar" style="display:none;"></button>
-        <button type="button" name="botonActualizar">Guardar</button>
+        <button type="submit" id="botonSubmitActualizar" name="botonSubmitActualizar" style="display:none;"></button>
+        <button type="button" id="botonActualizar"  name="botonActualizar">Guardar</button>
 
-        <button type="submit" id="botonSubmitBorrar" style="display:none;"></button>
-        <button type="button" name="botonBorrar">Eliminar empleado</button>
+        <button type="submit" id="botonSubmitBorrar" name="botonSubmitBorrar"style="display:none;"></button>
+        <button type="button" id="botonBorrar" name="botonBorrar">Eliminar empleado</button>
     </form>
 
     <script>
@@ -277,7 +277,7 @@
             $fechaInicio = $_POST["fechaInicio"];
             $fechaFin = $_POST["fechaFin"];
             guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado, $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion, $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $escuela, $gradoDeEstudios, $fechaInicio, $fechaFin);
-        } elseif (isset($_POST['formBorrar'])) {
+        } elseif (isset($_POST['botonSubmitBorrar'])) {
             borrarEmpleado($numeroEmpleado);
         }
     }
