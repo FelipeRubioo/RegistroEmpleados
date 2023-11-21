@@ -5,7 +5,7 @@
     <?php include 'funciones.php';
 
     ?>
-   <script src="peticion.js"></script> 
+    <script src="peticion.js"></script>
     <link rel="stylesheet" href="estilo.css" type="text/css">
     <title>Registro de empleados</title>
     <!-- Required meta tags -->
@@ -56,7 +56,7 @@
         <!-- Form de datos adicionales -->
 
         <h3>Datos adicionales:</h3>
-    
+
         <label for="curp">CURP:</label>
         <input type="text" id="curp" name="curp" maxlength="18" required>
 
@@ -163,11 +163,11 @@
         <div id="studies-container">
             <!-- aqui se agregan o quitan estudios -->
         </div>
-
+        <input type="hidden" id="studyCount" name="studyCount">
         <button type="button" id="add-study-btn" onclick="agregarEstudio()">Agregar Estudio</button>
 
         <button type="submit" id="botonSubmit" style="display:none;"></button>
-        <button type="button" id="botonGuardar" >Guardar</button>           
+        <button type="button" id="botonGuardar">Guardar</button>
     </form>
 
     <button onclick="probarFuncion()">Probar funcion</button>
@@ -181,20 +181,20 @@
             newStudyDiv.innerHTML = `
             <div class="study-container">
                 <label for="escuela">Escuela:</label>
-                <input type="text" name="escuela" maxlength="30" required>
+                <input type="text" id="escuela" name="escuela" maxlength="30" required>
 
                 <label for="gradoDeEstudios">Grado de estudios:</label>
-                <select name="gradoDeEstudios" id="gradoDeEstudios" required>
+                <select id="gradoDeEstudios" name="gradoDeEstudios"  required>
                         <?php
                         crearSelect("gradoDeEstudios");
                         ?>
                         </select>
 
                 <label for="fechaInicio">Fecha de inicio:</label>
-                <input type="date" name="fechaInicio" required>
+                <input type="date" id="fechaInicio" name="fechaInicio" required>
 
                 <label for="fechaFin">Fecha de Fin:</label>
-                <input type="date" name="fechaFin" required>
+                <input type="date" id="fechaFin" name="fechaFin" required>
 
                 <button onclick="quitarEstudio(this)">Eliminar Estudio</button>
 
@@ -204,8 +204,26 @@
             studyCount++;
             var studyID = 'studyContainer' + studyCount;
             newStudyDiv.id = studyID;
-
+            //se agrega el nuevo div con inputs al codigo 
             container.appendChild(newStudyDiv);
+            //cambiar nombre y id de los inputs
+            var escuela = document.getElementById('escuela');
+            var gradoDeEstudios = document.getElementById('gradoDeEstudios');
+            var fechaInicio = document.getElementById('fechaInicio');
+            var fechaFin = document.getElementById('fechaFin');
+
+            escuela.id = 'escuela' + studyCount;
+            escuela.name = 'escuela' + studyCount;
+            gradoDeEstudios.id = 'gradoDeEstudios' + studyCount;
+            gradoDeEstudios.name = 'gradoDeEstudios' + studyCount;
+            fechaInicio.id = 'fechaInicio' + studyCount;
+            fechaInicio.name = 'fechaInicio' + studyCount;
+            fechaFin.id = 'fechaFin' + studyCount;
+            fechaFin.name = 'fechaFin' + studyCount;
+
+            //se actualiza el contador de estudios
+            var contadorEstudios = document.getElementById('studyCount');
+            contadorEstudios.value = studyCount;
         }
 
         function quitarEstudio(boton) {
@@ -239,7 +257,6 @@
 
             }
         }
-
     </script>
 
     <script>
@@ -251,7 +268,7 @@
             //si hay un numero al final de la URL se hace el redirect
             if (matches) {
                 var number = matches[1];
-                
+
                 // se crea el nuevo url (con el numero de empleado al final)
                 var newUrl = 'http://localhost/ConsultarEmpleado.php?variable=' + number;
                 // redirecciona al nuevo url
@@ -262,7 +279,7 @@
     <?php
     //obtener datos del formulario
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        
+
         //Datos generales
         if (isset($_POST["apellidoPaterno"])) {
             $apellidoPaterno = $_POST["apellidoPaterno"];
@@ -295,20 +312,34 @@
             $numeroInterior = $_POST["numeroInterior"];
 
             //estudios
-            
-            $escuela = $_POST["escuela"];
-            $gradoDeEstudios = $_POST["gradoDeEstudios"];
-            $fechaInicio = $_POST["fechaInicio"];
-            $fechaFin = $_POST["fechaFin"];
+            $studyCount = $_POST["studyCount"];
+            $estudios = [];
+            //
+            for ($i = 1; $i <= $studyCount; $i++) {
+                $escuelaName = "escuela$i";
+                $gradoDeEstudiosName = "gradoDeEstudios$i";
+                $fechaInicioName = "fechaInicio$i";
+                $fechaFin = "fechaFin$i";
 
-            $numeroEmpleado = generaNumeroEmpleado();
-            guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado , $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion , $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $escuela, $gradoDeEstudios, $fechaInicio, $fechaFin);
+                $escuela = $_POST[$escuelaName];
+                $gradoDeEstudios = $_POST[$gradoDeEstudiosName];
+                $fechaInicio = $_POST[$fechaInicioName];
+                $fechaFin = $_POST[$fechaFin];
+
+                //se agrega al arreglo
+                $estudios[$i]= ["escuela"=>$escuela, "gradoDeEstudios"=>$gradoDeEstudios, "fechaInicio"=>$fechaInicio, "fechaFin"=>$fechaFin];
+            }
+
+            //echo $estudios[2]["fechaInicio"];
+
+           $numeroEmpleado = generaNumeroEmpleado();
+           guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado, $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion, $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $estudios);
         }
     }
 
-    
 
-    
+
+
     ?>
 
 </body>

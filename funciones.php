@@ -33,7 +33,7 @@ function generaNumeroEmpleado()
 }
 
 
-function crearArregloEmpleado($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado, $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion, $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $escuela, $gradoDeEstudios, $fechaInicio, $fechaFin)
+function crearArregloEmpleado($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado, $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion, $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $estudios)
 {
 
     //almacenar datos en un arreglo
@@ -63,20 +63,17 @@ function crearArregloEmpleado($apellidoPaterno, $apellidoMaterno, $nombre, $sexo
         'nombreVialidad' => $nombreVialidad,
         'numeroExterior' => $numeroExterior,
         'numeroInterior' => $numeroInterior,
-        'escuela' => $escuela,
-        'gradoDeEstudios' => $gradoDeEstudios,
-        'fechaInicio' => $fechaInicio,
-        'fechaFin' => $fechaFin
+        'estudios' => $estudios
     );
 
     return $empleado;
 }
 
 
-function guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado, $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion, $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $escuela, $gradoDeEstudios, $fechaInicio, $fechaFin)
+function guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado, $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion, $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $estudios)
 {
 
-    $empleado = crearArregloEmpleado($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado, $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion, $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $escuela, $gradoDeEstudios, $fechaInicio, $fechaFin);
+    $empleado = crearArregloEmpleado($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado, $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion, $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $estudios);
 
     //solo se guarda un archivo si se llenaron todos los campos del formulario
     if ($apellidoPaterno != null) {
@@ -158,10 +155,6 @@ function obtenerEmpleado($numeroEmpleado)
     return $empleado;
 }
 
-//si no se selecciono una fotografia, se pone silueta.png como default
-function revisarFotografia($fotografia)
-{
-}
 
 function crearSelect($datoABuscar)
 {
