@@ -145,13 +145,11 @@ function obtenerEmpleado($numeroEmpleado)
     $numeroInterior = $datosEmpleado->numeroInterior;
 
     //Estudios 
-    $escuela = $datosEmpleado->escuela;
-    $gradoDeEstudios = $datosEmpleado->gradoDeEstudios;
-    $fechaInicio = $datosEmpleado->fechaInicio;
-    $fechaFin = $datosEmpleado->fechaFin;
+    $estudios = $datosEmpleado->estudios;
+
     
     //guardar los datos en un arreglo y regresarlo
-    $empleado = crearArregloEmpleado($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado, $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion, $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $escuela, $gradoDeEstudios, $fechaInicio, $fechaFin);
+    $empleado = crearArregloEmpleado($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado, $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion, $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $estudios);
     return $empleado;
 }
 
@@ -205,4 +203,11 @@ function crearSelect($datoABuscar)
         $valor = $opciones['Descripcion'];
         echo "<option value=\"$valor\">$valor</option>";
     }
+}
+
+
+function crearContainer(){
+    
+
+
 }
