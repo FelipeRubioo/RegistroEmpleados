@@ -20,7 +20,7 @@ function guardar() {
         console.error("este es el error: " + error.message);
     }
 }
-//le damos a un elemento del archivo la capacidad de hacer la solicitud
+//en el archivo RegistroEmpleado.php, el botonGuardar activa la funcion, la cual activa el submit del form
 document.addEventListener("DOMContentLoaded", function () {
     let botonGuardar = document.getElementById("botonGuardar");
     botonGuardar.addEventListener("click", guardar);
