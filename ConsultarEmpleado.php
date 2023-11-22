@@ -12,116 +12,16 @@
 </head>
 
 <body onload="activarSelects()">
-    <!-- Estudios -->
-    <h3>Estudios:</h3>
-    <div id="studies-container">
-
-        <!-- aqui se agregan o quitan estudios -->
-    </div>
-    <input type="hidden" id="studyCount" name="studyCount">
-    <script>
-        var studyCount = 0;
-
-        function agregarEstudio() {
-            var container = document.getElementById('studies-container');
-            var newStudyDiv = document.createElement('div');
-            newStudyDiv.innerHTML = `
-                <div class="study-container">
-                <label for="escuela">Escuela:</label>
-                <input type="text" id="escuela" name="escuela" maxlength="30" required>
-
-                <label for="gradoDeEstudios">Grado de estudios:</label>
-                <select id="gradoDeEstudios" name="gradoDeEstudios"  required>
-                        <?php
-                        crearSelect("gradoDeEstudios");
-                        ?>
-                        </select>
-
-                <label for="fechaInicio">Fecha de inicio:</label>
-                <input type="date" id="fechaInicio" name="fechaInicio" required>
-
-                <label for="fechaFin">Fecha de Fin:</label>
-                <input type="date" id="fechaFin" name="fechaFin" required>
-
-                <button onclick="quitarEstudio(this)">Eliminar Estudio</button>
-
-            </div>
-        `;
-            //Cambiar el ID del nuevo div para que sea unico
-            studyCount++;
-            var studyID = 'studyContainer' + studyCount;
-            newStudyDiv.id = studyID;
-            //se agrega el nuevo div con inputs al codigo 
-            container.appendChild(newStudyDiv);
-            //cambiar nombre y id de los inputs
-            var escuela = document.getElementById('escuela');
-            var gradoDeEstudios = document.getElementById('gradoDeEstudios');
-            var fechaInicio = document.getElementById('fechaInicio');
-            var fechaFin = document.getElementById('fechaFin');
-
-            escuela.id = 'escuela' + studyCount;
-            escuela.name = 'escuela' + studyCount;
-            gradoDeEstudios.id = 'gradoDeEstudios' + studyCount;
-            gradoDeEstudios.name = 'gradoDeEstudios' + studyCount;
-            fechaInicio.id = 'fechaInicio' + studyCount;
-            fechaInicio.name = 'fechaInicio' + studyCount;
-            fechaFin.id = 'fechaFin' + studyCount;
-            fechaFin.name = 'fechaFin' + studyCount;
-
-            //se actualiza el contador de estudios
-            var contadorEstudios = document.getElementById('studyCount');
-            contadorEstudios.value = studyCount;
-        }
-
-        function quitarEstudio(boton) {
-            var container = document.getElementById('studies-container');
-            var studyDiv = boton.parentNode.parentNode.id;
-
-            var studyDiv = document.getElementById(studyDiv);
-
-            //se elimina el div con su contenido 
-            container.removeChild(studyDiv);
-
-        }
-    </script>
-
-    <h1>Pagina de consulta de empleado</h1>
-
+    
     <?php
     $numeroEmpleado = $_GET['variable'];
     $empleado = obtenerEmpleado($numeroEmpleado);
     //estudios es el arreglo que contiene arreglos
     $estudios = $empleado['estudios'];
-    $numeroEstudios = 0;
-    //si se tienen tres estudios, $numeroEstudio es 3
-    foreach ($estudios as $numeroEstudio) {
-        $numeroEstudios++;
-        echo "<script>";
-        echo  "agregarEstudio();";
-        echo '</script>';
-        foreach ($numeroEstudio as $dato => $valor) {
-            $nombreInput = "$dato$numeroEstudios";
-            $valorInput = $valor;
-            echo "$nombreInput = $valorInput";
-            echo "<br>";
-
-            echo "<script>";
-            echo "console.log('numeroEstudios:' + $numeroEstudios);";
-            echo "for (let i = 1; i <= $numeroEstudios ; i++) {";
-            echo "console.log('loop:' +i);";
-            //se agregan los valores a los inputs
-            echo "let valorInput = '$valorInput';";
-            echo "document.getElementById('$nombreInput').value = valorInput;";
-            //  let escuela = document.getElementById('escuela'+i);
-            //  escuela.value = "buhos"; 
-            echo "}";
-            echo '</script>';
-        }
-    }
     ?>
 
-    <input type="hidden" value=<?php echo json_encode($numeroEstudios); ?> id="numeroEstudios" name="numeroEstudios">
 
+    <h1>Pagina de consulta de empleado</h1>
     <!-- no se puede poner solo el mismo archivo como action ya que desasparece el numero de empleado, hay que agregarlo al URL-->
     <form action=<?php echo $_SERVER['PHP_SELF'] . "?variable=" . $numeroEmpleado; ?> method="POST">
 
@@ -247,7 +147,107 @@
         <label for="numeroInterior">Numero interior:</label>
         <input value=<?php echo json_encode($empleado['numeroInterior']); ?> type="number" id="numeroInterior" name="numeroInterior" minlength="5" maxlength="10">
 
+        <!-- Estudios -->
+    <h3>Estudios:</h3>
+    <div id="studies-container">
 
+        <!-- aqui se agregan o quitan estudios -->
+    </div>
+    <input type="hidden" id="studyCount" name="studyCount">
+    <script>
+        var studyCount = 0;
+
+        function agregarEstudio() {
+            var container = document.getElementById('studies-container');
+            var newStudyDiv = document.createElement('div');
+            newStudyDiv.innerHTML = `
+                <div class="study-container">
+                <label for="escuela">Escuela:</label>
+                <input type="text" id="escuela" name="escuela" maxlength="30" required>
+
+                <label for="gradoDeEstudios">Grado de estudios:</label>
+                <select id="gradoDeEstudios" name="gradoDeEstudios"  required>
+                        <?php
+                        crearSelect("gradoDeEstudios");
+                        ?>
+                        </select>
+
+                <label for="fechaInicio">Fecha de inicio:</label>
+                <input type="date" id="fechaInicio" name="fechaInicio" required>
+
+                <label for="fechaFin">Fecha de Fin:</label>
+                <input type="date" id="fechaFin" name="fechaFin" required>
+
+                <button onclick="quitarEstudio(this)">Eliminar Estudio</button>
+
+            </div>
+        `;
+            //Cambiar el ID del nuevo div para que sea unico
+            studyCount++;
+            var studyID = 'studyContainer' + studyCount;
+            newStudyDiv.id = studyID;
+            //se agrega el nuevo div con inputs al codigo 
+            container.appendChild(newStudyDiv);
+            //cambiar nombre y id de los inputs
+            var escuela = document.getElementById('escuela');
+            var gradoDeEstudios = document.getElementById('gradoDeEstudios');
+            var fechaInicio = document.getElementById('fechaInicio');
+            var fechaFin = document.getElementById('fechaFin');
+
+            escuela.id = 'escuela' + studyCount;
+            escuela.name = 'escuela' + studyCount;
+            gradoDeEstudios.id = 'gradoDeEstudios' + studyCount;
+            gradoDeEstudios.name = 'gradoDeEstudios' + studyCount;
+            fechaInicio.id = 'fechaInicio' + studyCount;
+            fechaInicio.name = 'fechaInicio' + studyCount;
+            fechaFin.id = 'fechaFin' + studyCount;
+            fechaFin.name = 'fechaFin' + studyCount;
+
+            //se actualiza el contador de estudios
+            var contadorEstudios = document.getElementById('studyCount');
+            contadorEstudios.value = studyCount;
+        }
+
+        function quitarEstudio(boton) {
+            var container = document.getElementById('studies-container');
+            var studyDiv = boton.parentNode.parentNode.id;
+
+            var studyDiv = document.getElementById(studyDiv);
+
+            //se elimina el div con su contenido 
+            container.removeChild(studyDiv);
+
+        }
+    </script>
+
+    <?php
+    $numeroEstudios = 0;
+    //si se tienen tres estudios, $numeroEstudio es 3
+    foreach ($estudios as $numeroEstudio) {
+        $numeroEstudios++;
+        echo "<script>";
+        echo  "agregarEstudio();";
+        echo '</script>';
+        foreach ($numeroEstudio as $dato => $valor) {
+            $nombreInput = "$dato$numeroEstudios";
+            $valorInput = $valor;
+            //echo "$nombreInput = $valorInput";
+            //echo "<br>";
+
+            echo "<script>";
+           // echo "console.log('numeroEstudios:' + $numeroEstudios);";
+            echo "for (let i = 1; i <= $numeroEstudios ; i++) {";
+           // echo "console.log('loop:' +i);";
+            //se agregan los valores a los inputs
+            echo "let valorInput = '$valorInput';";
+            echo "document.getElementById('$nombreInput').value = valorInput;";
+            //  let escuela = document.getElementById('escuela'+i);
+            //  escuela.value = "buhos"; 
+            echo "}";
+            echo '</script>';
+        }
+    }
+    ?>
         <input type="hidden" id="studyCount" name="studyCount">
         <button type="button" id="add-study-btn" onclick="agregarEstudio()">Agregar Estudio</button>
 
