@@ -85,6 +85,7 @@ function guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo,
         file_put_contents($rutaArchivoData, $jsonEmpleado);
 
         //guardar imagen en img
+
         $rutaArchivoImg = 'C:/xampp/htdocs/EjercicioReclutamiento/img/' . $numeroEmpleado . '.png';
         $tmpName = $fotografia['tmp_name'];
         move_uploaded_file($tmpName, $rutaArchivoImg);
@@ -147,7 +148,7 @@ function obtenerEmpleado($numeroEmpleado)
     //Estudios 
     $estudios = $datosEmpleado->estudios;
 
-    
+
     //guardar los datos en un arreglo y regresarlo
     $empleado = crearArregloEmpleado($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado, $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion, $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $estudios);
     return $empleado;
@@ -206,8 +207,6 @@ function crearSelect($datoABuscar)
 }
 
 
-function crearContainer(){
-    
-
-
+function crearContainer()
+{
 }

@@ -5,7 +5,8 @@
     <?php include 'funciones.php';
 
     ?>
-    <script src="peticion.js"></script>
+    <!-- <script src="peticion.js"></script> -->
+    
     <link rel="stylesheet" href="estilo.css" type="text/css">
     <title>Registro de empleados</title>
     <!-- Required meta tags -->
@@ -14,10 +15,13 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+     <!-- Include jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 
 
-<body onload="probarFuncion()">
+<body onload="redireccion()">
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
@@ -165,12 +169,9 @@
         </div>
         <input type="hidden" id="studyCount" name="studyCount">
         <button type="button" id="add-study-btn" onclick="agregarEstudio()">Agregar Estudio</button>
-
-        <button type="submit" id="botonSubmit" style="display:none;"></button>
-        <button type="button" id="botonGuardar">Guardar</button>
+        <button type="submit" id="botonSubmit">Guardar</button>
+        
     </form>
-
-    <button onclick="probarFuncion()">Probar funcion</button>
 
     <script>
         var studyCount = 0;
@@ -257,10 +258,13 @@
 
             }
         }
+
+        
+    </script>
     </script>
 
     <script>
-        function probarFuncion() {
+        function redireccion() {
             // obtiene el url actual
             var currentUrl = window.location.href;
             // obtiene el numero de empleado del url, asumiendo que es el ultimo elemento del url
@@ -288,6 +292,7 @@
             $sexo = $_POST["sexo"];
             $fechaNacimiento = $_POST["fechaNacimiento"];
             $fotografia = $_FILES["fotografia"];
+            echo $fotografia;
 
             //Datos adicionales
             $curp = $_POST["curp"];
@@ -327,13 +332,13 @@
                 $fechaFin = $_POST[$fechaFin];
 
                 //se agrega al arreglo
-                $estudios[$i]= ["escuela"=>$escuela, "gradoDeEstudios"=>$gradoDeEstudios, "fechaInicio"=>$fechaInicio, "fechaFin"=>$fechaFin];
+                $estudios[$i] = ["escuela" => $escuela, "gradoDeEstudios" => $gradoDeEstudios, "fechaInicio" => $fechaInicio, "fechaFin" => $fechaFin];
             }
 
             //echo $estudios[2]["fechaInicio"];
 
-           $numeroEmpleado = generaNumeroEmpleado();
-           guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado, $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion, $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $estudios);
+            $numeroEmpleado = generaNumeroEmpleado();
+            guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado, $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion, $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $estudios);
         }
     }
 
@@ -341,6 +346,36 @@
 
 
     ?>
+    <script>
+    // se sube el form con ajax
+    $(document).ready(function () {
+      $('#formRegistro').submit(function (event) {
+        event.preventDefault(); // Prevent default form submission
+
+        
+         // Create FormData object
+         var formData = new FormData(this);
+         // Se envia la solicitud ajax
+        $.ajax({
+          type: 'POST',
+          url: '/RegistroEmpleado.php',
+          data: formData,
+          //estas dos lineas son para que se pueda pasar la imagen correctamente
+          contentType: false, // Important: tell jQuery not to process the data
+          processData: false, // Important: tell jQuery not to set contentType
+
+          success: function (response) {
+           console.log('se subio el form usando ajax');
+           
+          },
+          error: function (xhr, status, error) {
+            // Handle error response
+            console.error(error);
+          }
+        });
+      });
+    });
+  </script>
 
 </body>
 

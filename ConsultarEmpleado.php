@@ -23,7 +23,7 @@
 
     <h1>Pagina de consulta de empleado</h1>
     <!-- no se puede poner solo el mismo archivo como action ya que desasparece el numero de empleado, hay que agregarlo al URL-->
-    <form action=<?php echo $_SERVER['PHP_SELF'] . "?variable=" . $numeroEmpleado; ?> method="POST">
+    <form id="formConsulta" action="ConsultarEmpleado.php" method="POST">
 
         <!-- Datos Generales-->
         <h3>Datos generales:</h3>
@@ -206,7 +206,7 @@
                 //se actualiza el contador de estudios
                 var contadorEstudios = document.getElementById('studyCount');
                 contadorEstudios.value = studyCount;
-                
+
             }
 
             function quitarEstudio(boton) {
@@ -251,7 +251,7 @@
             }
         }
         ?>
-    
+
         <button type="button" id="add-study-btn" onclick="agregarEstudio()">Agregar Estudio</button>
 
         <button type="submit" id="botonSubmitActualizar" name="botonSubmitActualizar" style="display:none;"></button>
@@ -260,7 +260,7 @@
         <button type="submit" id="botonSubmitBorrar" name="botonSubmitBorrar" style="display:none;"></button>
         <button type="button" id="botonBorrar" name="botonBorrar">Eliminar empleado</button>
     </form>
-        
+
 
     <script>
         function activarSelects() {
@@ -350,7 +350,7 @@
                 $gradoDeEstudios = $_POST[$gradoDeEstudiosName];
                 $fechaInicio = $_POST[$fechaInicioName];
                 $fechaFin = $_POST[$fechaFin];
-                
+
                 //se agrega al arreglo
                 $estudios[$i] = ["escuela" => $escuela, "gradoDeEstudios" => $gradoDeEstudios, "fechaInicio" => $fechaInicio, "fechaFin" => $fechaFin];
             }
@@ -360,7 +360,31 @@
         }
     }
     ?>
+    <script>
+        // Handle form submission using AJAX
+        $(document).ready(function() {
+            $('#formConsulta').submit(function(event) {
+                event.preventDefault(); // Prevent default form submission
 
+                //collect form data
+                var formData = $(this).serialize();
+                // Send AJAX request
+                $.ajax({
+                    type: 'POST',
+                    url: '/ConsultarEmpleado.php',
+                    data: formData,
+                    success: function(response) {
+                        console.log('se subio el form usando ajax');
+
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error response
+                        console.error(error);
+                    }
+                });
+            });
+        });
+    </script>
 
 </body>
 
