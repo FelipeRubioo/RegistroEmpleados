@@ -6,7 +6,8 @@ $catalogo = new Catalogo();
 function getNumeroArchivos()
 {
 
-    //itera por todos los archivos de EmpleadoData, el numero del nuevo Empleado es el siguiente numero
+    //itera por todos los archivos de EmpleadoData, el numero del nuevo Empleado es el primer numero vacio que encuentre
+    //si un archivo se elimina, se tomara su lugar
     $directorio = 'C:/xampp/htdocs/EjercicioReclutamiento/EmpleadoData';
     $archivos = scandir($directorio);
 
@@ -21,7 +22,7 @@ function generaNumeroEmpleado()
 {
 
     $numeroArchivos = getNumeroArchivos();
-
+        //itera por todos los archivos existentes en Data, si hay uno disponible lo toma como el nuevo numero de empleado
     for ($i = 1; $i <= $numeroArchivos + 1; $i++) {
         $existeArchivo = file_exists('C:/xampp/htdocs/EjercicioReclutamiento/EmpleadoData/' . $i . '.json');
         if ($existeArchivo == false) {
@@ -99,10 +100,10 @@ function guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo,
 }
 
 function borrarEmpleado($numeroEmpleado)
-{
+{   //se toma la ubicacion del archivo datos e imagen del empleado
     $rutaArchivo = 'C:/xampp/htdocs/EjercicioReclutamiento/EmpleadoData/' . $numeroEmpleado . '.json';
     $rutaArchivoImg = 'C:/xampp/htdocs/EjercicioReclutamiento/img/' . $numeroEmpleado . '.jpg';
-    // se elimina el empleado
+    // se eliminan ambos archivos del empleado
     if (unlink($rutaArchivo) && unlink($rutaArchivoImg)) {
         echo 'se elimino el empleado.';
     } else {
@@ -114,7 +115,7 @@ function obtenerEmpleado($numeroEmpleado)
 
     $rutaArchivo = 'C:/xampp/htdocs/EjercicioReclutamiento/EmpleadoData/' . $numeroEmpleado . '.json';
 
-    //obtener carpeta
+    //obtener archivo de datos del empleado
     $archivoJson = file_get_contents($rutaArchivo);
 
     //leer archivo JSON
@@ -166,7 +167,7 @@ function crearSelect($datoABuscar)
 {
     global $catalogo;
     $arreglo = array();
-
+    //dependiendo del dato que indiquemos, se nos devuelve el arreglo que contiene arreglos para ese dato
     switch ($datoABuscar) {
         case 'sexo':
             $arreglo = $catalogo->GetCatSexo();
@@ -207,13 +208,10 @@ function crearSelect($datoABuscar)
     }
 
     //tenemos un arreglo que contiene arreglos
+    //para cada opcion (0,1,2,3,etc) se tienen sus keys (descripcion, id, etc.), solo ocupamos la de ID para dar valor a los options
     foreach ($arreglo as $opciones) {
         $valor = $opciones['Descripcion'];
         echo "<option value=\"$valor\">$valor</option>";
     }
 }
 
-
-function crearContainer()
-{
-}

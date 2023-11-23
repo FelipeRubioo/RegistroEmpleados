@@ -22,12 +22,12 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </head>
 
-
+ <!-- cuando se pone el url, se hace la redireccion, pero al cargar la pagina pasa por el if si se debe hacer la redireccion  -->
 <body onload="redireccion()">
 
     <!-- Form de datos generales  -->
-
     <h3>Datos generales:</h3>
+     <!-- Form registro, contiene todos los inputs: Datos generales, Datos adicionales, Domicilio y estudios -->
     <form id="formRegistro" action="RegistroEmpleado.php" method="post" enctype="multipart/form-data">
         <label for="apellidoPaterno">Apellido Paterno:</label>
         <input type="text" id="apellidoPaterno" name="apellidoPaterno" pattern="[A-Za-z ]+" title="Escriba un apellido valido, solo letras" maxlength="20" required>
@@ -40,14 +40,16 @@
 
         <label for="sexo">Sexo:</label>
         <select name="sexo" id="sexo" required>
+            <!--crea el select con todas sus opciones -->
             <?php
             crearSelect("sexo");
             ?>
         </select>
-
+        <!--el empleado no puede tener mas de 100 años ni menor de 15 años-->
         <label for="fechaNacimiento">Fecha de nacimiento:</label>
         <input type="date" id="fechaNacimiento" name="fechaNacimiento" min ="1920-01-01" max="2009-01-01" required>
 
+        <!--al cambiar el estatus del archivo (cuando se selecciona) se muestra el preview-->
         <label for="fotografia">Seleccione una fotografia:</label>
         <input type="file" name="fotografia" id="fotografia" accept="image/*" onchange="mostrarPreviewPonerDefault()">
         <img id="preview" src="#" style="display:none; max-width: 300px; max-height: 300px;">
@@ -175,6 +177,8 @@
         var studyCount = 0;
 
         function agregarEstudio() {
+            //al agregar un estudio, se genera un div, al que se le pone dentro (innerHTML) 4 inputs
+            //el id del div, los 4 inputs y sus nombres se cambian con un contador para que cada uno sea unico
             var container = document.getElementById('studies-container');
             var newStudyDiv = document.createElement('div');
             newStudyDiv.innerHTML = `
@@ -239,9 +243,12 @@
             })
         }
 
+        //al quitar un estudio, se reduce por 1 el contador de estudios para que no interfiera con el ciclo de guardado el manejo del post en php
         function quitarEstudio(boton) {
             studyCount--;
             var container = document.getElementById('studies-container');
+            //queremos el study div generado, el que contiene los 4 inputs
+            //el parentNode del study container es el studyDiv, el cual está dentro del studies-container
             var studyDiv = boton.parentNode.parentNode.id;
 
             var studyDiv = document.getElementById(studyDiv);
@@ -257,10 +264,11 @@
 
     <script>
         function mostrarPreviewPonerDefault() {
+            
             var fotografia = document.getElementById('fotografia');
             var preview = document.getElementById('preview');
 
-            // Ensure that a file is selected
+            // asegura que se tenga seleccionado un archivo
             if (fotografia.files && fotografia.files[0]) {
                 var reader = new FileReader();
 
@@ -270,7 +278,7 @@
                 };
                 reader.readAsDataURL(fotografia.files[0]);
             } else {
-                fotografia.src = '"C:/xampp/htdocs/EjercicioReclutamiento/img/silueta.png"';
+               
 
             }
         }
@@ -288,39 +296,39 @@
             && isset($_POST["estatura"]) && isset($_POST["peso"]) && isset($_POST["complexion"]) && isset($_POST["discapacidad"]) && isset($_POST["pais"]) && isset($_POST["estado"]) && isset($_POST["municipio"]) && isset($_POST["localidad"]) && isset($_POST["colonia"]) 
             && isset ($_POST["codigoPostal"]) && isset($_POST["nombreVialidad"]) && isset($_POST["numeroExterior"])) {
 
-            $apellidoPaterno = $_POST["apellidoPaterno"]; //*
-            $apellidoMaterno = $_POST["apellidoMaterno"]; //*
-            $nombre = $_POST["nombre"]; //*
-            $sexo = $_POST["sexo"]; //*
-            $fechaNacimiento = $_POST["fechaNacimiento"]; //*
+            $apellidoPaterno = $_POST["apellidoPaterno"];
+            $apellidoMaterno = $_POST["apellidoMaterno"]; 
+            $nombre = $_POST["nombre"]; 
+            $sexo = $_POST["sexo"]; 
+            $fechaNacimiento = $_POST["fechaNacimiento"]; 
             $fotografia = $_FILES["fotografia"];
            
             //Datos adicionales
-            $curp = $_POST["curp"]; //*
-            $rfc = $_POST["rfc"]; //*
-            $estadoCivil = $_POST["estadoCivil"]; //*
-            $tipoSangre = $_POST["tipoSangre"]; //*
-            $estatura = $_POST["estatura"]; //*
-            $peso = $_POST["peso"]; //*
-            $complexion = $_POST["complexion"]; //*
-            $discapacidad = $_POST["discapacidad"]; //*
+            $curp = $_POST["curp"]; 
+            $rfc = $_POST["rfc"]; 
+            $estadoCivil = $_POST["estadoCivil"]; 
+            $tipoSangre = $_POST["tipoSangre"]; 
+            $estatura = $_POST["estatura"]; 
+            $peso = $_POST["peso"]; 
+            $complexion = $_POST["complexion"]; 
+            $discapacidad = $_POST["discapacidad"]; 
 
             //Domicilio
-            $pais = $_POST["pais"]; //*
-            $estado = $_POST["estado"]; //*
-            $municipio = $_POST["municipio"];//*
-            $localidad = $_POST["localidad"]; //*
-            $colonia = $_POST["colonia"]; //*
-            $codigoPostal = $_POST["codigoPostal"]; //*
+            $pais = $_POST["pais"]; 
+            $estado = $_POST["estado"]; 
+            $municipio = $_POST["municipio"];
+            $localidad = $_POST["localidad"]; 
+            $colonia = $_POST["colonia"]; 
+            $codigoPostal = $_POST["codigoPostal"]; 
             $tipoVialidad = $_POST["tipoVialidad"];
             $nombreVialidad = $_POST["nombreVialidad"];
-            $numeroExterior = $_POST["numeroExterior"]; //*
+            $numeroExterior = $_POST["numeroExterior"]; 
             $numeroInterior = $_POST["numeroInterior"];
 
             //estudios
             $studyCount = $_POST["studyCount"];
             $estudios = [];
-            //
+            //por cada estudio que se guardó (valor de studyCount), se obtiene el valor de cada input de cada estudio agregado
             for ($i = 1; $i <= $studyCount; $i++) {
                 $escuelaName = "escuela$i";
                 $gradoDeEstudiosName = "gradoDeEstudios$i";
@@ -332,12 +340,11 @@
                 $fechaInicio = $_POST[$fechaInicioName];
                 $fechaFin = $_POST[$fechaFin];
 
-                //se agrega al arreglo
+                //se agrega al arreglo asociativo
                 $estudios[$i] = ["escuela" => $escuela, "gradoDeEstudios" => $gradoDeEstudios, "fechaInicio" => $fechaInicio, "fechaFin" => $fechaFin];
             }
 
-            //echo $estudios[2]["fechaInicio"];
-
+            //se genera el numero de empleado y se guarda el empleado en el archivo (la imagen tambien)
             $numeroEmpleado = generaNumeroEmpleado();
             guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado, $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion, $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $estudios);
             

@@ -11,6 +11,7 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 
+<!-- cuando carga la pagina, todos los inputs toman los valores el empleado que estamos consultando -->
 <body onload="activarSelects()">
 
     <?php
@@ -21,16 +22,20 @@
         $numeroEmpleado = $_POST['numeroEmpleado'];
     }
 
+    //se obtiene un arreglo con todos los atributos del empleado 
     $empleado = obtenerEmpleado($numeroEmpleado);
-    //estudios es el arreglo que contiene arreglos
+    //estudios es un arreglo que contiene arreglos
     $estudios = $empleado['estudios'];
     ?>
 
 
     <h1>Pagina de consulta de empleado</h1>
-    <!-- no se puede poner solo el mismo archivo como action ya que desasparece el numero de empleado, hay que agregarlo al URL-->
+    <!-- formConsulta contiene todos los inputs que se pueden guardar (actualizar) -->
     <form id="formConsulta" action="ConsultarEmpleado.php" method="post">
+        <!-- numeroEmpleado se necesita para guardar la informacion, asi que se guarda en este input oculto-->
         <input value=<?php echo json_encode($numeroEmpleado) ?> type="hidden" id="numeroEmpleado" name="numeroEmpleado">
+        <!-- el valor hiddenBorrarEmpleado determina si el empleado se borrará o no-->
+         <!--hiddenBorrarEmpleado valdra 0 siempre y cuando no se presione el boton de borrar empleado-->
         <input value=0 type="hidden" id="hiddenBorrarEmpleado" name="hiddenBorrarEmpleado">
         <!-- Datos Generales-->
         <h3>Datos generales:</h3>
@@ -70,17 +75,18 @@
                     };
                     reader.readAsDataURL(fotografia.files[0]);
                 } else {
-                    fotografia.src = '"C:/xampp/htdocs/EjercicioReclutamiento/img/silueta.png"';
+                    
 
                 }
             }
         </script>
-
+         <!-- se puede seleccionar una fotografia distinta para el empleado-->
         <label for="fotografia">Seleccione una fotografia:</label>
         <input type="file" name="fotografia" id="fotografia" accept="image/*" onchange="mostrarPreviewPonerDefault()">
         <img id="preview" src="#" style="display:none; max-width: 300px; max-height: 300px;">
         <?php $source = "C:/xampp/htdocs/EjercicioReclutamiento/img/$numeroEmpleado.jpg" ?>
         <img src=<?php echo $source; ?> alt="Description" width="30px" height="20px">
+
         <!-- Form de datos adicionales -->
         <h3>Datos adicionales:</h3>
 
@@ -191,7 +197,7 @@
         <input type="hidden" id="studyCount" name="studyCount">
         <script>
             var studyCount = 0;
-
+            //igual que en RegistrarEmpleado, agregan inputs dinamicamente, dependiendo de los botones agregar y  quitar estudio
             function agregarEstudio() {
                 var container = document.getElementById('studies-container');
                 var newStudyDiv = document.createElement('div');
@@ -259,7 +265,7 @@
                 })
 
             }
-
+            //se reduce el conteo de estudios al eliminar uno
             function quitarEstudio(boton) {
                 studyCount--;
                 var container = document.getElementById('studies-container');
@@ -276,12 +282,18 @@
 
         <?php
         $numeroEstudios = 0;
-        //si se tienen tres estudios, $numeroEstudio es 3
+        //estudios es el arreglo que contiene arreglos
+        //si se tienen tres estudios, $numeroEstudio es 3, 3 arreglos con propiedades
+        //por cada estudio, se agrega un estudio (los 4 inputs con un boton de eliminar estudio, esto con la funcion agregarEstudio();)
         foreach ($estudios as $numeroEstudio) {
             $numeroEstudios++;
             echo "<script>";
             echo  "agregarEstudio();";
             echo '</script>';
+            //cada estudio tiene su $dato (escuela,grado, fechainicio,fechafin) y cada dato tiene su llave
+            //se crean los nombres de todos los inputs que ya se registraron
+            //ej: $nombreInput = "escuela1"
+            //   $valorInput = "unison"     
             foreach ($numeroEstudio as $dato => $valor) {
                 $nombreInput = "$dato$numeroEstudios";
                 $valorInput = $valor;
@@ -299,24 +311,29 @@
         <script>
             //funcion que toma los datos del form y hace el post en esta misma pagina
             function postData() {
+                //se toman todos inputs y sus valores del formConsulta
                 var formConsulta = new FormData(document.getElementById('formConsulta'));
 
+                //se crea un objeto XMLHttpRequest que enviara un metodo post
+                //se enviara a la pagina donde se encuentra (window.location.href) y sera de tipo asincrono (true)
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', window.location.href, true);
 
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState == 4 && xhr.status == 200) {
-                        //document.getElementById('result').innerHTML = xhr.responseText;
+                        //por ahora no se tiene que hacer con la respuesta del exito
                     }
                 };
-
+                //se envia el post con los datos del form a esta misma pagina
                 xhr.send(formConsulta);
             }
 
             //funcion de cuando se da click al boton de borrar empleado
             function eliminarEmpleado() {
+                //se cambia el valor del input escondido, cuando se lea el valor de "1" en el manejo del post, se eliminará el empleado
                 let hiddenBotonBorrar = document.getElementById('hiddenBorrarEmpleado');
                 hiddenBotonBorrar.value = 1;
+                //se hace post
                 postData();
             }
         </script>
@@ -334,6 +351,7 @@
 
 
     <script>
+        //cuando carga el sistema, se agregan los valores del empleado en los inputs vacios
         function activarSelects() {
             //seleccionar opcion en distintos selects
             seleccionarOpcion(<?php echo json_encode($empleado['sexo']); ?>, "sexo");
@@ -349,7 +367,8 @@
             seleccionarOpcion(<?php echo json_encode($empleado['tipoVialidad']); ?>, "tipoVialidad");
 
         }
-
+        //para cada select, se itera por todas las opciones que tiene
+        //cuando la opcion coincide con el del empleado, se selecciona (selected = true)
         function seleccionarOpcion(opcion, nombreSelect) {
             select = document.getElementById(nombreSelect)
             for (let i = 0; i < select.options.length; i++) {
@@ -361,7 +380,7 @@
     </script>
 
     <?php
-
+    //cuando entra el post, se valida que todos los campos requeridos tengan valor o no se actualizaran los valores
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if (isset($_POST["apellidoPaterno"]) && isset($_POST["apellidoMaterno"]) && isset($_POST["nombre"]) && isset($_POST["sexo"]) && isset($_POST["fechaNacimiento"]) && isset($_POST["curp"]) && isset($_POST["rfc"]) && isset($_POST["estadoCivil"]) && isset($_POST["tipoSangre"])
             && isset($_POST["estatura"]) && isset($_POST["peso"]) && isset($_POST["complexion"]) && isset($_POST["discapacidad"]) && isset($_POST["pais"]) && isset($_POST["estado"]) && isset($_POST["municipio"]) && isset($_POST["localidad"]) && isset($_POST["colonia"]) 
@@ -369,7 +388,7 @@
 
             //si este valor es 0, no se activó el boton de borrarEmpleado
             $borrarEmpleado = $_POST["borrarEmpleado"];
-            //actualizar empleado
+            //Datos generales
             $apellidoPaterno = $_POST["apellidoPaterno"];
             $apellidoMaterno = $_POST["apellidoMaterno"];
             $nombre = $_POST["nombre"];
@@ -403,7 +422,7 @@
             //estudios
             $studyCount = $_POST["studyCount"];
             $estudios = [];
-            //
+            //por cada estudio que se guardó (valor de studyCount), se obtiene el valor de cada input de cada estudio agregado
             for ($i = 1; $i <= $studyCount; $i++) {
                 $escuelaName = "escuela$i";
                 $gradoDeEstudiosName = "gradoDeEstudios$i";
@@ -417,9 +436,9 @@
 
                 //se agrega al arreglo
                 $estudios[$i] = ["escuela" => $escuela, "gradoDeEstudios" => $gradoDeEstudios, "fechaInicio" => $fechaInicio, "fechaFin" => $fechaFin];
-            }
+            } //se guarda el empleado, sobreescribiendo el archivo existente del empleado
             guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado, $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion, $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $estudios);
-        }
+        } //si se dio click al boton borrar, el valor del hidden es 1
         if ($_POST['hiddenBorrarEmpleado'] == 1) {
             borrarEmpleado($numeroEmpleado);
         }
