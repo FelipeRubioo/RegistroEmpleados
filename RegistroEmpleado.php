@@ -5,8 +5,6 @@
     <?php include 'funciones.php';
 
     ?>
-    <!-- <script src="peticion.js"></script> -->
-    
     <link rel="stylesheet" href="estilo.css" type="text/css">
     <title>Registro de empleados</title>
     <!-- Required meta tags -->
@@ -16,16 +14,16 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-     <!-- Include jQuery -->
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </head>
 
 
 <body onload="redireccion()">
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
 
     <!-- Form de datos generales  -->
 
@@ -170,7 +168,7 @@
         <input type="hidden" id="studyCount" name="studyCount">
         <button type="button" id="add-study-btn" onclick="agregarEstudio()">Agregar Estudio</button>
         <button type="submit" id="botonSubmit">Guardar</button>
-        
+
     </form>
 
     <script>
@@ -228,16 +226,20 @@
         }
 
         function quitarEstudio(boton) {
+            studyCount--;
             var container = document.getElementById('studies-container');
             var studyDiv = boton.parentNode.parentNode.id;
 
             var studyDiv = document.getElementById(studyDiv);
 
-            //se elimina el div con su contenido 
+            //se elimina el div con su contenido y se actualiza el contador de estudios
             container.removeChild(studyDiv);
-
+            var contadorEstudios = document.getElementById('studyCount');
+            contadorEstudios.value = studyCount;
         }
     </script>
+
+
 
     <script>
         function mostrarPreviewPonerDefault() {
@@ -258,28 +260,10 @@
 
             }
         }
-
-        
     </script>
     </script>
 
-    <script>
-        function redireccion() {
-            // obtiene el url actual
-            var currentUrl = window.location.href;
-            // obtiene el numero de empleado del url, asumiendo que es el ultimo elemento del url
-            var matches = currentUrl.match(/\/(\d+)$/);
-            //si hay un numero al final de la URL se hace el redirect
-            if (matches) {
-                var number = matches[1];
 
-                // se crea el nuevo url (con el numero de empleado al final)
-                var newUrl = 'http://localhost/ConsultarEmpleado.php?variable=' + number;
-                // redirecciona al nuevo url
-                window.location.replace(newUrl);
-            }
-        }
-    </script>
     <?php
     //obtener datos del formulario
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -292,8 +276,7 @@
             $sexo = $_POST["sexo"];
             $fechaNacimiento = $_POST["fechaNacimiento"];
             $fotografia = $_FILES["fotografia"];
-            echo $fotografia;
-
+           
             //Datos adicionales
             $curp = $_POST["curp"];
             $rfc = $_POST["rfc"];
@@ -346,36 +329,55 @@
 
 
     ?>
+
+<script>
+        function redireccion() {
+            // obtiene el url actual
+            var currentUrl = window.location.href;
+            // obtiene el numero de empleado del url, asumiendo que es el ultimo elemento del url
+            var matches = currentUrl.match(/\/(\d+)$/);
+            //si hay un numero al final de la URL se hace el redirect
+            if (matches) {
+                var number = matches[1];
+
+                // se crea el nuevo url (con el numero de empleado al final)
+                var newUrl = 'http://localhost/ConsultarEmpleado.php?numeroEmpleado=' + number;
+                // redirecciona al nuevo url
+                window.location.replace(newUrl);
+            }
+        }
+    </script>
     <script>
-    // se sube el form con ajax
-    $(document).ready(function () {
-      $('#formRegistro').submit(function (event) {
-        event.preventDefault(); // Prevent default form submission
+        // se sube el form con ajax
+        $(document).ready(function() {
+            $('#formRegistro').submit(function(event) {
+                event.preventDefault(); // Prevent default form submission
 
-        
-         // Create FormData object
-         var formData = new FormData(this);
-         // Se envia la solicitud ajax
-        $.ajax({
-          type: 'POST',
-          url: '/RegistroEmpleado.php',
-          data: formData,
-          //estas dos lineas son para que se pueda pasar la imagen correctamente
-          contentType: false, // Important: tell jQuery not to process the data
-          processData: false, // Important: tell jQuery not to set contentType
 
-          success: function (response) {
-           console.log('se subio el form usando ajax');
-           
-          },
-          error: function (xhr, status, error) {
-            // Handle error response
-            console.error(error);
-          }
+                // Create FormData object
+                var formData = new FormData(this);
+                // Se envia la solicitud ajax
+                $.ajax({
+                    type: 'POST',
+                    url: '/RegistroEmpleado.php',
+                    data: formData,
+                    //estas dos lineas son para que se pueda pasar la imagen correctamente
+                    contentType: false, // Important: tell jQuery not to process the data
+                    //si enviamos formData, processData debe ser False
+                    processData: false, // Important: tell jQuery not to set contentType
+
+                    success: function(response) {
+                        console.log('se subio el form usando ajax');
+                        alert('se registro el usuario');
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error response
+                        console.error(error);
+                    }
+                });
+            });
         });
-      });
-    });
-  </script>
+    </script>
 
 </body>
 

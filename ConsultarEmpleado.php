@@ -2,19 +2,26 @@
 <?php include 'funciones.php';
 
 ?>
-<script src="peticion.js"></script>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultar Empleado</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 
 <body onload="activarSelects()">
 
     <?php
-    $numeroEmpleado = $_GET['variable'];
+    //obtenemos el numero de empleado, ya sea que el metodo sea GET o POST
+    if ($_SERVER["REQUEST_METHOD"] === "GET") {
+        $numeroEmpleado = $_GET['numeroEmpleado'];
+        echo "get";
+    } elseif ($_SERVER["REQUEST_METHOD"] === "POST") {
+        $numeroEmpleado = $_POST['numeroEmpleado'];
+    } 
+     echo "numeroEmpleado: $numeroEmpleado";  
     $empleado = obtenerEmpleado($numeroEmpleado);
     //estudios es el arreglo que contiene arreglos
     $estudios = $empleado['estudios'];
@@ -23,11 +30,13 @@
 
     <h1>Pagina de consulta de empleado</h1>
     <!-- no se puede poner solo el mismo archivo como action ya que desasparece el numero de empleado, hay que agregarlo al URL-->
-    <form id="formConsulta" action="ConsultarEmpleado.php" method="POST">
-
+    <form id="formConsulta" action="ConsultarEmpleado.php" method="post">
+    <input value= <?php echo json_encode($numeroEmpleado)?> type="hidden" id="numeroEmpleado" name="numeroEmpleado" pattern="[A-Za-z]+" title="Escriba un apellido valido, solo letras" maxlength="20" required>
         <!-- Datos Generales-->
         <h3>Datos generales:</h3>
+
         <label for="apellidoPaterno">Apellido Paterno:</label>
+        
         <input value=<?php echo json_encode($empleado['apellidoPaterno']); ?> type="text" id="apellidoPaterno" name="apellidoPaterno" pattern="[A-Za-z]+" title="Escriba un apellido valido, solo letras" maxlength="20" required>
 
         <label for="apellidoMaterno">Apellido Materno:</label>
@@ -254,11 +263,11 @@
 
         <button type="button" id="add-study-btn" onclick="agregarEstudio()">Agregar Estudio</button>
 
-        <button type="submit" id="botonSubmitActualizar" name="botonSubmitActualizar" style="display:none;"></button>
-        <button type="button" id="botonActualizar" name="botonActualizar">Guardar</button>
+        
+        <button type="button" id="botonActualizar" name="botonActualizar" onclick="postData()">Guardar</button>
 
-        <button type="submit" id="botonSubmitBorrar" name="botonSubmitBorrar" style="display:none;"></button>
-        <button type="button" id="botonBorrar" name="botonBorrar">Eliminar empleado</button>
+        
+        <button type="button" id="botonBorrar" name="botonBorrar" onclick="postData()">Eliminar empleado</button>
     </form>
 
 
@@ -302,9 +311,9 @@
 
     <?php
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-        if (isset($_POST['botonSubmitActualizar'])) {
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        echo "<script>console.log('se entro al if del post');</script>";
+        if (isset($_POST["apellidoPaterno"])) {
             //actualizar empleado
             $apellidoPaterno = $_POST["apellidoPaterno"];
             $apellidoMaterno = $_POST["apellidoMaterno"];
@@ -355,35 +364,27 @@
                 $estudios[$i] = ["escuela" => $escuela, "gradoDeEstudios" => $gradoDeEstudios, "fechaInicio" => $fechaInicio, "fechaFin" => $fechaFin];
             }
             guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado, $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion, $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $estudios);
-        } elseif (isset($_POST['botonSubmitBorrar'])) {
+        } 
+        if (isset($_POST['apellidoPaterno'])) {
             borrarEmpleado($numeroEmpleado);
         }
     }
     ?>
     <script>
-        // Handle form submission using AJAX
-        $(document).ready(function() {
-            $('#formConsulta').submit(function(event) {
-                event.preventDefault(); // Prevent default form submission
+       function postData() {
+            var formConsulta = new FormData(document.getElementById('formConsulta'));
 
-                //collect form data
-                var formData = $(this).serialize();
-                // Send AJAX request
-                $.ajax({
-                    type: 'POST',
-                    url: '/ConsultarEmpleado.php',
-                    data: formData,
-                    success: function(response) {
-                        console.log('se subio el form usando ajax');
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', window.location.href, true);
+            
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    //document.getElementById('result').innerHTML = xhr.responseText;
+                }
+            };
 
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle error response
-                        console.error(error);
-                    }
-                });
-            });
-        });
+            xhr.send(formConsulta);
+        }
     </script>
 
 </body>
