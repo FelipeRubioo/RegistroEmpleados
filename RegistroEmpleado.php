@@ -322,6 +322,7 @@
 
             $numeroEmpleado = generaNumeroEmpleado();
             guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado, $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion, $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $estudios);
+            
         }
     }
 
@@ -368,7 +369,7 @@
 
                     success: function(response) {
                         console.log('se subio el form usando ajax');
-                        alert('se registro el usuario');
+                        alert('Se registró el usuario');
                     },
                     error: function(xhr, status, error) {
                         // Handle error response
