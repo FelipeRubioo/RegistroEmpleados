@@ -46,7 +46,7 @@
         </select>
 
         <label for="fechaNacimiento">Fecha de nacimiento:</label>
-        <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
+        <input type="date" id="fechaNacimiento" name="fechaNacimiento" min ="1920-01-01" max="2009-01-01" required>
 
         <label for="fotografia">Seleccione una fotografia:</label>
         <input type="file" name="fotografia" id="fotografia" accept="image/*" onchange="mostrarPreviewPonerDefault()">
@@ -180,20 +180,20 @@
             newStudyDiv.innerHTML = `
             <div class="study-container">
                 <label for="escuela">Escuela:</label>
-                <input type="text" id="escuela" name="escuela" maxlength="30" required>
+                <input type="text" id="escuela" name="escuela" maxlength="30">
 
                 <label for="gradoDeEstudios">Grado de estudios:</label>
-                <select id="gradoDeEstudios" name="gradoDeEstudios"  required>
+                <select id="gradoDeEstudios" name="gradoDeEstudios">
                         <?php
                         crearSelect("gradoDeEstudios");
                         ?>
                         </select>
 
                 <label for="fechaInicio">Fecha de inicio:</label>
-                <input type="date" id="fechaInicio" name="fechaInicio" required>
+                <input type="date" id="fechaInicio" name="fechaInicio">
 
                 <label for="fechaFin">Fecha de Fin:</label>
-                <input type="date" id="fechaFin" name="fechaFin" required>
+                <input type="date" id="fechaFin" name="fechaFin">
 
                 <button onclick="quitarEstudio(this)">Eliminar Estudio</button>
 
@@ -220,9 +220,23 @@
             fechaFin.id = 'fechaFin' + studyCount;
             fechaFin.name = 'fechaFin' + studyCount;
 
+            //los inputs se hacen obligatorios una vez se crean
+            escuela.setAttribute('required','true');
+            gradoDeEstudios.setAttribute('required','true');
+            fechaInicio.setAttribute('required','true');
+            fechaFin.setAttribute('required','true');
+
             //se actualiza el contador de estudios
             var contadorEstudios = document.getElementById('studyCount');
             contadorEstudios.value = studyCount;
+
+            //la fecha fin no puede ser antes que la de inicio
+            //cuando cambia la fecha de inicio, se establece como el maximo de la fecha fin   
+            fechaInicio.addEventListener('change',function(){ 
+
+                fechaFin.setAttribute('min',this.value);
+
+            })
         }
 
         function quitarEstudio(boton) {
@@ -268,35 +282,39 @@
     //obtener datos del formulario
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+        //Todos los datos requeridos deben venir en el post, de no ser asi, no se genera un nuevo registro
         //Datos generales
-        if (isset($_POST["apellidoPaterno"])) {
-            $apellidoPaterno = $_POST["apellidoPaterno"];
-            $apellidoMaterno = $_POST["apellidoMaterno"];
-            $nombre = $_POST["nombre"];
-            $sexo = $_POST["sexo"];
-            $fechaNacimiento = $_POST["fechaNacimiento"];
+        if (isset($_POST["apellidoPaterno"]) && isset($_POST["apellidoMaterno"]) && isset($_POST["nombre"]) && isset($_POST["sexo"]) && isset($_POST["fechaNacimiento"]) && isset($_POST["curp"]) && isset($_POST["rfc"]) && isset($_POST["estadoCivil"]) && isset($_POST["tipoSangre"])
+            && isset($_POST["estatura"]) && isset($_POST["peso"]) && isset($_POST["complexion"]) && isset($_POST["discapacidad"]) && isset($_POST["pais"]) && isset($_POST["estado"]) && isset($_POST["municipio"]) && isset($_POST["localidad"]) && isset($_POST["colonia"]) 
+            && isset ($_POST["codigoPostal"]) && isset($_POST["nombreVialidad"]) && isset($_POST["numeroExterior"])) {
+
+            $apellidoPaterno = $_POST["apellidoPaterno"]; //*
+            $apellidoMaterno = $_POST["apellidoMaterno"]; //*
+            $nombre = $_POST["nombre"]; //*
+            $sexo = $_POST["sexo"]; //*
+            $fechaNacimiento = $_POST["fechaNacimiento"]; //*
             $fotografia = $_FILES["fotografia"];
            
             //Datos adicionales
-            $curp = $_POST["curp"];
-            $rfc = $_POST["rfc"];
-            $estadoCivil = $_POST["estadoCivil"];
-            $tipoSangre = $_POST["tipoSangre"];
-            $estatura = $_POST["estatura"];
-            $peso = $_POST["peso"];
-            $complexion = $_POST["complexion"];
-            $discapacidad = $_POST["discapacidad"];
+            $curp = $_POST["curp"]; //*
+            $rfc = $_POST["rfc"]; //*
+            $estadoCivil = $_POST["estadoCivil"]; //*
+            $tipoSangre = $_POST["tipoSangre"]; //*
+            $estatura = $_POST["estatura"]; //*
+            $peso = $_POST["peso"]; //*
+            $complexion = $_POST["complexion"]; //*
+            $discapacidad = $_POST["discapacidad"]; //*
 
             //Domicilio
-            $pais = $_POST["pais"];
-            $estado = $_POST["estado"];
-            $municipio = $_POST["municipio"];
-            $localidad = $_POST["localidad"];
-            $colonia = $_POST["colonia"];
-            $codigoPostal = $_POST["codigoPostal"];
+            $pais = $_POST["pais"]; //*
+            $estado = $_POST["estado"]; //*
+            $municipio = $_POST["municipio"];//*
+            $localidad = $_POST["localidad"]; //*
+            $colonia = $_POST["colonia"]; //*
+            $codigoPostal = $_POST["codigoPostal"]; //*
             $tipoVialidad = $_POST["tipoVialidad"];
             $nombreVialidad = $_POST["nombreVialidad"];
-            $numeroExterior = $_POST["numeroExterior"];
+            $numeroExterior = $_POST["numeroExterior"]; //*
             $numeroInterior = $_POST["numeroInterior"];
 
             //estudios

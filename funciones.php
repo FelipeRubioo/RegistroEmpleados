@@ -86,17 +86,24 @@ function guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo,
 
         //guardar imagen en img
 
-        $rutaArchivoImg = 'C:/xampp/htdocs/EjercicioReclutamiento/img/' . $numeroEmpleado . '.png';
+        $rutaArchivoImg = 'C:/xampp/htdocs/EjercicioReclutamiento/img/' . $numeroEmpleado . '.jpg';
         $tmpName = $fotografia['tmp_name'];
-        move_uploaded_file($tmpName, $rutaArchivoImg);
+        if ($tmpName != null) {
+            move_uploaded_file($tmpName, $rutaArchivoImg);
+        }else{
+            $rutaDefault = "C:/xampp/htdocs/EjercicioReclutamiento/img/silueta.png";
+            copy($rutaDefault, $rutaArchivoImg);
+        }
+       
     }
 }
 
 function borrarEmpleado($numeroEmpleado)
 {
     $rutaArchivo = 'C:/xampp/htdocs/EjercicioReclutamiento/EmpleadoData/' . $numeroEmpleado . '.json';
+    $rutaArchivoImg = 'C:/xampp/htdocs/EjercicioReclutamiento/img/' . $numeroEmpleado . '.jpg';
     // se elimina el empleado
-    if (unlink($rutaArchivo)) {
+    if (unlink($rutaArchivo) && unlink($rutaArchivoImg)) {
         echo 'se elimino el empleado.';
     } else {
         echo 'no se puedo eliminar el empleado';

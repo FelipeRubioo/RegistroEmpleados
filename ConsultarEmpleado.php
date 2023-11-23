@@ -17,11 +17,10 @@
     //obtenemos el numero de empleado, ya sea que el metodo sea GET o POST
     if ($_SERVER["REQUEST_METHOD"] === "GET") {
         $numeroEmpleado = $_GET['numeroEmpleado'];
-        echo "get";
     } elseif ($_SERVER["REQUEST_METHOD"] === "POST") {
         $numeroEmpleado = $_POST['numeroEmpleado'];
     }
-    echo "numeroEmpleado: $numeroEmpleado";
+
     $empleado = obtenerEmpleado($numeroEmpleado);
     //estudios es el arreglo que contiene arreglos
     $estudios = $empleado['estudios'];
@@ -56,10 +55,32 @@
         <label for="fechaNacimiento">Fecha de nacimiento:</label>
         <input value=<?php echo json_encode($empleado['fechaNacimiento']); ?> type="date" id="fechaNacimiento" name="fechaNacimiento" required>
 
+        <script>
+            function mostrarPreviewPonerDefault() {
+                var fotografia = document.getElementById('fotografia');
+                var preview = document.getElementById('preview');
+
+                // Ensure that a file is selected
+                if (fotografia.files && fotografia.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(fotografia.files[0]);
+                } else {
+                    fotografia.src = '"C:/xampp/htdocs/EjercicioReclutamiento/img/silueta.png"';
+
+                }
+            }
+        </script>
+
         <label for="fotografia">Seleccione una fotografia:</label>
         <input type="file" name="fotografia" id="fotografia" accept="image/*" onchange="mostrarPreviewPonerDefault()">
         <img id="preview" src="#" style="display:none; max-width: 300px; max-height: 300px;">
-
+        <?php $source = "C:/xampp/htdocs/EjercicioReclutamiento/img/$numeroEmpleado.jpg" ?>
+        <img src=<?php echo $source; ?> alt="Description" width="30px" height="20px">
         <!-- Form de datos adicionales -->
         <h3>Datos adicionales:</h3>
 
@@ -177,20 +198,20 @@
                 newStudyDiv.innerHTML = `
                 <div class="study-container">
                 <label for="escuela">Escuela:</label>
-                <input type="text" id="escuela" name="escuela" maxlength="30" required>
+                <input type="text" id="escuela" name="escuela" maxlength="30">
 
                 <label for="gradoDeEstudios">Grado de estudios:</label>
-                <select id="gradoDeEstudios" name="gradoDeEstudios"  required>
+                <select id="gradoDeEstudios" name="gradoDeEstudios">
                         <?php
                         crearSelect("gradoDeEstudios");
                         ?>
                         </select>
 
                 <label for="fechaInicio">Fecha de inicio:</label>
-                <input type="date" id="fechaInicio" name="fechaInicio" required>
+                <input type="date" id="fechaInicio" name="fechaInicio">
 
                 <label for="fechaFin">Fecha de Fin:</label>
-                <input type="date" id="fechaFin" name="fechaFin" required>
+                <input type="date" id="fechaFin" name="fechaFin">
 
                 <button onclick="quitarEstudio(this)">Eliminar Estudio</button>
 
@@ -208,6 +229,7 @@
                 var fechaInicio = document.getElementById('fechaInicio');
                 var fechaFin = document.getElementById('fechaFin');
 
+                
                 escuela.id = 'escuela' + studyCount;
                 escuela.name = 'escuela' + studyCount;
                 gradoDeEstudios.id = 'gradoDeEstudios' + studyCount;
@@ -217,9 +239,24 @@
                 fechaFin.id = 'fechaFin' + studyCount;
                 fechaFin.name = 'fechaFin' + studyCount;
 
+                //los inputs se hacen obligatorios una vez se crean
+                escuela.setAttribute('required', 'true');
+                gradoDeEstudios.setAttribute('required', 'true');
+                fechaInicio.setAttribute('required', 'true');
+                fechaFin.setAttribute('required', 'true');
+
+
                 //se actualiza el contador de estudios
                 var contadorEstudios = document.getElementById('studyCount');
                 contadorEstudios.value = studyCount;
+
+                //la fecha fin no puede ser antes que la de inicio
+                //cuando cambia la fecha de inicio, se establece como el maximo de la fecha fin   
+                fechaInicio.addEventListener('change', function() {
+
+                    fechaFin.setAttribute('min', this.value);
+
+                })
 
             }
 
@@ -248,18 +285,12 @@
             foreach ($numeroEstudio as $dato => $valor) {
                 $nombreInput = "$dato$numeroEstudios";
                 $valorInput = $valor;
-                //echo "$nombreInput = $valorInput";
-                //echo "<br>";
 
                 echo "<script>";
-                // echo "console.log('numeroEstudios:' + $numeroEstudios);";
                 echo "for (let i = 1; i <= $numeroEstudios ; i++) {";
-                // echo "console.log('loop:' +i);";
                 //se agregan los valores a los inputs
                 echo "let valorInput = '$valorInput';";
                 echo "document.getElementById('$nombreInput').value = valorInput;";
-                //  let escuela = document.getElementById('escuela'+i);
-                //  escuela.value = "buhos"; 
                 echo "}";
                 echo '</script>';
             }
@@ -288,10 +319,9 @@
                 hiddenBotonBorrar.value = 1;
                 postData();
             }
-
         </script>
-            
-        
+
+
         <button type="button" id="add-study-btn" onclick="agregarEstudio()">Agregar Estudio</button>
 
 
@@ -318,17 +348,6 @@
             seleccionarOpcion(<?php echo json_encode($empleado['colonia']); ?>, "colonia");
             seleccionarOpcion(<?php echo json_encode($empleado['tipoVialidad']); ?>, "tipoVialidad");
 
-            //mostramos los estudios del empleado
-            /* let numeroEstudios = document.getElementById('numeroEstudios').value;
-            console.log("numeroEstudios: " + numeroEstudios);
-            for (let i = 1; i <= numeroEstudios; i++) {
-                console.log("loop: " +i);
-                agregarEstudio();
-                //se agregan los valores a los inputs
-                let escuela = document.getElementById('escuela'+i);
-                escuela.value = "buhos"; 
-        
-            } */
         }
 
         function seleccionarOpcion(opcion, nombreSelect) {
@@ -344,7 +363,9 @@
     <?php
 
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        if (isset($_POST["apellidoPaterno"])) {
+        if (isset($_POST["apellidoPaterno"]) && isset($_POST["apellidoMaterno"]) && isset($_POST["nombre"]) && isset($_POST["sexo"]) && isset($_POST["fechaNacimiento"]) && isset($_POST["curp"]) && isset($_POST["rfc"]) && isset($_POST["estadoCivil"]) && isset($_POST["tipoSangre"])
+            && isset($_POST["estatura"]) && isset($_POST["peso"]) && isset($_POST["complexion"]) && isset($_POST["discapacidad"]) && isset($_POST["pais"]) && isset($_POST["estado"]) && isset($_POST["municipio"]) && isset($_POST["localidad"]) && isset($_POST["colonia"]) 
+            && isset ($_POST["codigoPostal"]) && isset($_POST["nombreVialidad"]) && isset($_POST["numeroExterior"])) {
 
             //si este valor es 0, no se activó el boton de borrarEmpleado
             $borrarEmpleado = $_POST["borrarEmpleado"];
@@ -398,7 +419,6 @@
                 $estudios[$i] = ["escuela" => $escuela, "gradoDeEstudios" => $gradoDeEstudios, "fechaInicio" => $fechaInicio, "fechaFin" => $fechaFin];
             }
             guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado, $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion, $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $estudios);
-            
         }
         if ($_POST['hiddenBorrarEmpleado'] == 1) {
             borrarEmpleado($numeroEmpleado);
@@ -406,7 +426,7 @@
     }
     ?>
 
-    
+
 </body>
 
 </html>
