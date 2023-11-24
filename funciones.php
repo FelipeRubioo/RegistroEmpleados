@@ -76,8 +76,10 @@ function guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo,
 
     $empleado = crearArregloEmpleado($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado, $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion, $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $estudios);
 
-    //solo se guarda un archivo si se llenaron todos los campos del formulario
-    if ($apellidoPaterno != null) {
+    //solo se guarda un archivo si se llenaron todos los campos obligatorios del formulario
+    if ($apellidoPaterno != null && $apellidoMaterno != null && $nombre != null && $sexo != null && $fechaNacimiento != null && $numeroEmpleado != null
+        && $curp != null && $estadoCivil != null && $tipoSangre != null && $estatura != null && $peso != null && $estado != null && $municipio != null  && $localidad != null
+    && $colonia != null && $codigoPostal != null && $tipoVialidad != null && $numeroExterior != null) {
         //guardar arreglo en formato JSON
         $jsonEmpleado = json_encode($empleado);
 
@@ -89,12 +91,20 @@ function guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo,
 
         $rutaArchivoImg = 'C:/xampp/htdocs/EjercicioReclutamiento/img/' . $numeroEmpleado . '.jpg';
         $tmpName = $fotografia['tmp_name'];
+        //si se seleccionó una imagen, guarda esa imagen
         if ($tmpName != null) {
             move_uploaded_file($tmpName, $rutaArchivoImg);
-        }else{
+            //si no se seleccionó una imagen, comprueba que no se tenga ya una imagen para el empleado
+            //si ya tiene imagen, no se hace cambio en la carpeta de imagenes
+        }elseif (file_exists($rutaArchivoImg)) {
+            
+            //si no se tiene imagen previamente, se ponde silueta como default
+        }else {
             $rutaDefault = "C:/xampp/htdocs/EjercicioReclutamiento/img/silueta.png";
             copy($rutaDefault, $rutaArchivoImg);
         }
+            
+        
        
     }
 }

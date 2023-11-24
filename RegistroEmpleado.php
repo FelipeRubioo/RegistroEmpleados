@@ -19,270 +19,158 @@
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-
-    <style>
-        body {
-            background-color: #f8f9fa;
-            /* Light gray background color */
-        }
-    </style>
-
 </head>
 
-<!-- cuando se pone el url, se hace la redireccion, pero al cargar la pagina pasa por el if si se debe hacer la redireccion  -->
-
+ <!-- cuando se pone el url, se hace la redireccion, pero al cargar la pagina pasa por el if si se debe hacer la redireccion  -->
 <body onload="redireccion()">
+
+    <!-- datos generales  -->
+    <h3>Datos generales:</h3>
+     <!-- Form registro, contiene todos los inputs: Datos generales, Datos adicionales, Domicilio y estudios -->
     <form id="formRegistro" action="RegistroEmpleado.php" method="post" enctype="multipart/form-data">
-        <div class="container mt-5">
-            <!-- Datos generales -->
-            <div class="card">
-                <div class="card-body">
+        <label for="apellidoPaterno">Apellido Paterno:</label>
+        <input type="text" id="apellidoPaterno" name="apellidoPaterno" pattern="[A-Za-z ]+" title="Escriba un apellido valido, solo letras" maxlength="20" required>
 
-                    <h3 class="mb-3 border-bottom pb-2 ">Datos generales:</h3>
-                    <!-- Form registro, contiene todos los inputs: Datos generales, Datos adicionales, Domicilio y estudios -->
+        <label for="apellidoMaterno">Apellido Materno:</label>
+        <input type="text" id="apellidoMaterno" name="apellidoMaterno" pattern="[A-Za-z ]+" title="Escriba un apellido valido, solo letras" maxlength="20" required>
 
-                    <div class="row">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" pattern="[A-Za-z ]+" title="Escriba un nombre valido, solo letras" maxlength="30" required>
 
-                        <div class="col-md-4">
-                            <label class="text-muted" for="apellidoPaterno">Apellido Paterno<span class="text-danger">*</span>:</label>
-                            <input type="text" class="form-control" id="apellidoPaterno" name="apellidoPaterno" pattern="[A-Za-z ]+" title="Escriba un apellido valido, solo letras" maxlength="20" required>
+        <label for="sexo">Sexo:</label>
+        <select name="sexo" id="sexo" required>
+            <!--crea el select con todas sus opciones -->
+            <?php
+            crearSelect("sexo");
+            ?>
+        </select>
+        <!--el empleado no puede tener mas de 100 años-->
+        <label for="fechaNacimiento">Fecha de nacimiento:</label>
+        <input type="date" id="fechaNacimiento" name="fechaNacimiento" min ="1920-01-01" required>
 
-                        </div>
+        <!--al cambiar el estatus del archivo (cuando se selecciona) se muestra el preview-->
+        <label for="fotografia">Seleccione una fotografia:</label>
+        <input type="file" name="fotografia" id="fotografia" accept="image/*" onchange="mostrarPreview()">
+        <img id="preview" src="#" style="display:none; max-width: 300px; max-height: 300px;">
 
-                        <div class="col-md-4">
-                            <label class="text-muted" for="apellidoMaterno">Apellido Materno<span class="text-danger">*</span>:</label>
-                            <input type="text" class="form-control" id="apellidoMaterno" name="apellidoMaterno" pattern="[A-Za-z ]+" title="Escriba un apellido valido, solo letras" maxlength="20" required>
-                        </div>
+        <!-- Datos adicionales -->
 
-                        <div class="col-md-4">
-                            <label class="text-muted" for="nombre">Nombre<span class="text-danger">*</span>:</label>
-                            <input type="text" class="form-control" id="nombre" name="nombre" pattern="[A-Za-z ]+" title="Escriba un nombre valido, solo letras" maxlength="30" required>
-                        </div>
-                    </div>
+        <h3>Datos adicionales:</h3>
 
-                    <div class="row">
+        <label for="curp">CURP:</label>
+        <input type="text" id="curp" name="curp"  minlength="18" maxlength="18" required>
 
-                        <div class="col-md-4 mt-3">
-                            <label class="text-muted" for="sexo">Sexo<span class="text-danger">*</span>:</label>
-                            <select class="form-control" name="sexo" id="sexo" required>
-                                <!--crea el select con todas sus opciones -->
-                                <?php
-                                crearSelect("sexo");
-                                ?>
-                            </select>
-                        </div>
-                        <!--el empleado no puede tener mas de 100 años ni menor de 15 años-->
-                        <div class="col-md-4 mt-3">
-                            <label class="text-muted" for="fechaNacimiento">Fecha de nacimiento<span class="text-danger">*</span>:</label>
-                            <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento" min="1920-01-01" max="2009-01-01" required>
-                        </div>
-                        <!--al cambiar el estatus del archivo (cuando se selecciona) se muestra el preview-->
-                        <div class="col-md-4 mt-3">
-                            <label class="text-muted" for="fotografia">Seleccione una fotografia:</label>
-                            <input type="file" class="form-control-file mt-2" name="fotografia" id="fotografia" accept="image/*" onchange="mostrarPreviewPonerDefault()">
-                            <img id="preview" src="#" style="display:none; max-width: 300px; max-height: 300px;">
-                        </div>
-                    </div>
+        <label for="RFC">RFC:</label>
+        <input type="text" id="rfc" name="rfc"  minlength="13" maxlength="13" required>
+        <span class="help-text">13 caracteres</span>
 
-                </div>
+        <label for="estadoCivil">Estado civil:</label>
+        <select name="estadoCivil" id="estadoCivil" required>
+            <?php
+            crearSelect("estadoCivil");
+            ?>
+        </select>
 
-            </div>
-            <!-- Datos adicionales -->
-            <div class="card mt-4">
-                <div class="card-body">
+        <label for="tipoSangre">Tipo de sangre:</label>
+        <select name="tipoSangre" id="tipoSangre" required>
+            <?php
+            crearSelect("tipoSangre");
+            ?>
+        </select>
 
-                    <h3 class="mb-3 border-bottom pb-2 ">Datos adicionales:</h3>
+        <label for="estatura">Estatura:</label>
+        <input type="number" id="estatura" name="estatura" step="0.01" min="1.40" max="2.30" required>
 
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label class="text-muted" for="curp">CURP<span class="text-danger">*</span>:</label>
-                            <input type="text" class="form-control" id="curp" name="curp" maxlength="18" required>
+        <label for="peso">Peso:</label>
+        <input type="number" id="peso" name="peso" step="0.01" min="40" max="150" required>
 
-                        </div>
+        <label for="complexion">Complexion:</label>
+        <select name="complexion" id="complexion" required>
+            <?php
+            crearSelect("complexion");
+            ?>
+        </select>
 
-                        <div class="col-md-4">
-                            <label class="text-muted" for="RFC">RFC<span class="text-danger">*</span>:</label>
-                            <input type="text" class="form-control" id="rfc" name="rfc" maxlength="13" required>
-                            <span class="help-text text-muted">13 caracteres</span>
+        <label for="discapacidad">Discapacidad:</label>
+        <select name="discapacidad" id="discapacidad" required>
+            <?php
+            crearSelect("discapacidad");
+            ?>
+        </select>
 
-                        </div>
+        <!-- Domicilio -->
 
-                        <div class="col-md-4">
-                            <label class="text-muted" for="estadoCivil">Estado civil<span class="text-danger">*</span>:</label>
-                            <select class="form-control" name="estadoCivil" id="estadoCivil" required>
-                                <?php
-                                crearSelect("estadoCivil");
-                                ?>
-                            </select>
-                        </div>
+        <h3>Domicilio:</h3>
 
+        <label for="pais">País:</label>
+        <select name="pais" id="pais" required>
+            <?php
+            crearSelect("pais");
+            ?>
+        </select>
 
-                    </div>
+        <label for="estado">Estado:</label>
+        <select name="estado" id="estado" required>
+            <?php
+            crearSelect("estado");
+            ?>
+        </select>
 
-                    <div class="row">
+        <label for="municipio">Municipio:</label>
+        <select name="municipio" id="municipio" required>
+            <?php
+            crearSelect("municipio");
+            ?>
+        </select>
 
-                        <div class="col-md-4 mt-3">
-                            <label class="text-muted" for="tipoSangre">Tipo de sangre<span class="text-danger">*</span>:</label>
-                            <select class="form-control" name="tipoSangre" id="tipoSangre" required>
-                                <?php
-                                crearSelect("tipoSangre");
-                                ?>
-                            </select>
+        <label for="localidad">Localidad:</label>
+        <select name="localidad" id="localidad" required>
+            <?php
+            crearSelect("localidad");
+            ?>
+        </select>
 
-                        </div>
+        <label for="colonia">Colonia:</label>
+        <select name="colonia" id="colonia" required>
+            <?php
+            crearSelect("colonia");
+            ?>
+        </select>
 
-                        <div class="col-md-4 mt-3">
-                            <label class="text-muted" for="estatura">Estatura<span class="text-danger">*</span>:</label>
-                            <input class="form-control" type="number" id="estatura" name="estatura" placeholder="Ingrese la estatura en metros" step="0.01" min="1.40" max="2.30" required>
-                        </div>
+        <label for="codigoPostal">Codigo postal:</label>
+        <input type="number" id="codigoPostal" name="codigoPostal" minlength="5" maxlength="10" required>
 
-                        <div class="col-md-4 mt-3">
-                            <label class="text-muted" for="peso">Peso<span class="text-danger">*</span>:</label>
-                            <input class="form-control" type="number" id="peso" name="peso" placeholder="Ingrese el peso en kilogramos" step="0.01" min="40" max="150" required>
-                        </div>
+        <label for="tipoVialidad">Tipo de vialidad:</label>
+        <select name="tipoVialidad" id="tipoVialidad">
+            <?php
+            crearSelect("tipoVialidad");
+            ?>
+        </select>
 
-                    </div>
-                    <div class="row">
+        <label for="nombreVialidad">Nombre de vialidad:</label>
+        <input type="text" id="nombreVialidad" name="nombreVialidad" maxlength="30" required>
 
-                        <div class="col-md-4 mt-3">
-                            <label class="text-muted" for="complexion">Complexion<span class="text-danger">*</span>:</label>
-                            <select class="form-control" name="complexion" id="complexion" required>
-                                <?php
-                                crearSelect("complexion");
-                                ?>
-                            </select>
-                        </div>
+        <label for="numeroExterior">Numero exterior:</label>
+        <input type="number" id="numeroExterior" name="numeroExterior" minlength="1" maxlength="6" required>
 
-                        <div class="col-md-4 mt-3">
-                            <label class="text-muted" for="discapacidad">Discapacidad<span class="text-danger">*</span>:</label>
-                            <select class="form-control" name="discapacidad" id="discapacidad" required>
-                                <?php
-                                crearSelect("discapacidad");
-                                ?>
-                            </select>
+        <label for="numeroInterior">Numero interior:</label>
+        <input type="number" id="numeroInterior" name="numeroInterior" minlength="5" maxlength="10">
 
-                        </div>
+        <!-- Estudios -->
 
-                    </div>
+        <h3>Estudios:</h3>
 
-                </div>
-
-            </div>
-            <!-- Domicilio -->
-            <div class="card mt-4">
-                <div class="card-body">
-
-
-                    <h3 class="mb-3 border-bottom pb-2 ">Domicilio:</h3>
-                    <div class="row">
-
-                        <div class="col-md-4">
-                            <label class="text-muted" for="pais">País<span class="text-danger">*</span>:</label>
-                            <select class="form-control" name="pais" id="pais" required>
-                                <?php
-                                crearSelect("pais");
-                                ?>
-                            </select>
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="text-muted" for="estado">Estado<span class="text-danger">*</span>:</label>
-                            <select class="form-control" name="estado" id="estado" required>
-                                <?php
-                                crearSelect("estado");
-                                ?>
-                            </select>
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="text-muted" for="municipio">Municipio<span class="text-danger">*</span>:</label>
-                            <select class="form-control" name="municipio" id="municipio" required>
-                                <?php
-                                crearSelect("municipio");
-                                ?>
-                            </select>
-                        </div>
-
-
-                    </div>
-
-                    <div class="row">
-
-                        <div class="col-md-4 mt-3">
-                            <label class="text-muted" for="localidad">Localidad<span class="text-danger">*</span>:</label>
-                            <select class="form-control" name="localidad" id="localidad" required>
-                                <?php
-                                crearSelect("localidad");
-                                ?>
-                            </select>
-                        </div>
-
-                        <div class="col-md-4 mt-3">
-                            <label class="text-muted" for="colonia">Colonia<span class="text-danger">*</span>:</label>
-                            <select class="form-control" name="colonia" id="colonia" required>
-                                <?php
-                                crearSelect("colonia");
-                                ?>
-                            </select>
-                        </div>
-
-                        <div class="col-md-4 mt-3">
-                            <label class="text-muted" for="codigoPostal">Codigo postal<span class="text-danger">*</span>:</label>
-                            <input class="form-control" type="number" id="codigoPostal" name="codigoPostal" minlength="5" maxlength="10" required>
-                        </div>
-
-
-                    </div>
-                    <div class="row">
-
-                        <div class="col-md-4 mt-3">
-                            <label class="text-muted" for="tipoVialidad">Tipo de vialidad:</label>
-                            <select class="form-control" name="tipoVialidad" id="tipoVialidad">
-                                <?php
-                                crearSelect("tipoVialidad");
-                                ?>
-                            </select>
-                        </div>
-
-                        <div class="col-md-4 mt-3">
-                            <label class="text-muted" for="nombreVialidad">Nombre de vialidad<span class="text-danger">*</span>:</label>
-                            <input class="form-control" type="text" id="nombreVialidad" name="nombreVialidad" maxlength="30" required>
-                        </div>
-
-                        <div class="col-md-4 mt-3">
-                            <label class="text-muted" for="numeroExterior">Numero exterior<span class="text-danger">*</span>:</label>
-                            <input class="form-control" type="number" id="numeroExterior" name="numeroExterior" minlength="1" maxlength="6" required>
-                        </div>
-
-                    </div>
-
-                    <div class="row">
-
-                        <div class="col-md-4 mt-3">
-                            <label class="text-muted" for="numeroInterior">Numero interior:</label>
-                            <input class="form-control" type="number" id="numeroInterior" name="numeroInterior" minlength="5" maxlength="10">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Estudios -->
-            <div class="card mt-4">
-                <div class="card-body">
-                    <h3 class="mb-3 border-bottom pb-2 ">Estudios:</h3>
-
-                    <div id="studies-container">
-                        <!-- aqui se agregan o quitan estudios -->
-                    </div>
-                    <input type="hidden" id="studyCount" name="studyCount">
-                    <button type="button" id="add-study-btn" onclick="agregarEstudio()">Agregar Estudio</button>
-                    <button type="submit" id="botonSubmit">Guardar</button>
+        <div id="studies-container">
+            <!-- dentro de este div se agregan o quitan estudios -->
+        </div>
+        <!-- studyCount nos dice cuantos estudios tenemos por el momento-->
+        <input type="hidden" id="studyCount" name="studyCount">
+        <!-- agregarEstudio genera un div dentro del div "studies-container" -->
+        <button type="button" id="add-study-btn" onclick="agregarEstudio()">Agregar Estudio</button>
+        <!-- sube el form-->
+        <button type="submit" id="botonSubmit">Guardar</button>
 
     </form>
-        </div>
-
-
-
 
     <script>
         var studyCount = 0;
@@ -294,38 +182,23 @@
             var newStudyDiv = document.createElement('div');
             newStudyDiv.innerHTML = `
             <div class="study-container">
-                <div class="row">
-                    <div class="col-md-3">
-                        <label class="text-muted" for="escuela">Escuela<span class="text-danger">*</span>:</label>
-                        <input class="form-control" type="text" id="escuela" name="escuela" maxlength="30">
+                <label for="escuela">Escuela:</label>
+                <input type="text" id="escuela" name="escuela" maxlength="30">
 
-                    </div>
-
-                    <div class="col-md-3">
-                        <label  class="text-muted" for="gradoDeEstudios">Grado de estudios<span class="text-danger">*</span>:</label>
-                        <select class="form-control" id="gradoDeEstudios" name="gradoDeEstudios">
+                <label for="gradoDeEstudios">Grado de estudios:</label>
+                <select id="gradoDeEstudios" name="gradoDeEstudios">
                         <?php
                         crearSelect("gradoDeEstudios");
                         ?>
                         </select>
 
-                    </div>
+                <label for="fechaInicio">Fecha de inicio:</label>
+                <input type="date" id="fechaInicio" name="fechaInicio">
 
-                    <div class="col-md-3">
-                        <label class="text-muted" for="fechaInicio">Fecha de inicio<span class="text-danger">*</span>:</label>
-                        <input class="form-control" type="date" id="fechaInicio" name="fechaInicio" >
+                <label for="fechaFin">Fecha de Fin:</label>
+                <input type="date" id="fechaFin" name="fechaFin">
 
-                    </div>
-
-                    <div class="col-md-3">
-                        <label class="text-muted" for="fechaFin">Fecha de Fin<span class="text-danger">*</span>:</label>
-                        <input class="form-control" type="date" id="fechaFin" name="fechaFin">
-
-                    </div>
-
-                    <button onclick="quitarEstudio(this)">Eliminar Estudio</button>
-            
-                </div>
+                <button onclick="quitarEstudio(this)">Eliminar Estudio</button>
 
             </div>
         `;
@@ -351,10 +224,10 @@
             fechaFin.name = 'fechaFin' + studyCount;
 
             //los inputs se hacen obligatorios una vez se crean
-            escuela.setAttribute('required', 'true');
-            gradoDeEstudios.setAttribute('required', 'true');
-            fechaInicio.setAttribute('required', 'true');
-            fechaFin.setAttribute('required', 'true');
+            escuela.setAttribute('required','true');
+            gradoDeEstudios.setAttribute('required','true');
+            fechaInicio.setAttribute('required','true');
+            fechaFin.setAttribute('required','true');
 
             //se actualiza el contador de estudios
             var contadorEstudios = document.getElementById('studyCount');
@@ -362,9 +235,9 @@
 
             //la fecha fin no puede ser antes que la de inicio
             //cuando cambia la fecha de inicio, se establece como el maximo de la fecha fin   
-            fechaInicio.addEventListener('change', function() {
+            fechaInicio.addEventListener('change',function(){ 
 
-                fechaFin.setAttribute('min', this.value);
+                fechaFin.setAttribute('min',this.value);
 
             })
         }
@@ -375,9 +248,9 @@
             var container = document.getElementById('studies-container');
             //queremos el study div generado, el que contiene los 4 inputs
             //el parentNode del study container es el studyDiv, el cual está dentro del studies-container
-            var studyDiv = boton.parentNode.parentNode.parentNode;
+            var studyDiv = boton.parentNode.parentNode.id;
 
-            //var studyDiv = document.getElementById(studyDiv);
+            var studyDiv = document.getElementById(studyDiv);
 
             //se elimina el div con su contenido y se actualiza el contador de estudios
             container.removeChild(studyDiv);
@@ -385,16 +258,12 @@
             contadorEstudios.value = studyCount;
         }
     </script>
-    </div>
-
-    </div>
-
 
 
 
     <script>
-        function mostrarPreviewPonerDefault() {
-
+        function mostrarPreview() {
+            
             var fotografia = document.getElementById('fotografia');
             var preview = document.getElementById('preview');
 
@@ -408,7 +277,7 @@
                 };
                 reader.readAsDataURL(fotografia.files[0]);
             } else {
-
+               
 
             }
         }
@@ -422,39 +291,37 @@
 
         //Todos los datos requeridos deben venir en el post, de no ser asi, no se genera un nuevo registro
         //Datos generales
-        if (
-            isset($_POST["apellidoPaterno"]) && isset($_POST["apellidoMaterno"]) && isset($_POST["nombre"]) && isset($_POST["sexo"]) && isset($_POST["fechaNacimiento"]) && isset($_POST["curp"]) && isset($_POST["rfc"]) && isset($_POST["estadoCivil"]) && isset($_POST["tipoSangre"])
-            && isset($_POST["estatura"]) && isset($_POST["peso"]) && isset($_POST["complexion"]) && isset($_POST["discapacidad"]) && isset($_POST["pais"]) && isset($_POST["estado"]) && isset($_POST["municipio"]) && isset($_POST["localidad"]) && isset($_POST["colonia"])
-            && isset($_POST["codigoPostal"]) && isset($_POST["nombreVialidad"]) && isset($_POST["numeroExterior"])
-        ) {
+        if (isset($_POST["apellidoPaterno"]) && isset($_POST["apellidoMaterno"]) && isset($_POST["nombre"]) && isset($_POST["sexo"]) && isset($_POST["fechaNacimiento"]) && isset($_POST["curp"]) && isset($_POST["rfc"]) && isset($_POST["estadoCivil"]) && isset($_POST["tipoSangre"])
+            && isset($_POST["estatura"]) && isset($_POST["peso"]) && isset($_POST["complexion"]) && isset($_POST["discapacidad"]) && isset($_POST["pais"]) && isset($_POST["estado"]) && isset($_POST["municipio"]) && isset($_POST["localidad"]) && isset($_POST["colonia"]) 
+            && isset ($_POST["codigoPostal"]) && isset($_POST["nombreVialidad"]) && isset($_POST["numeroExterior"])) {
 
             $apellidoPaterno = $_POST["apellidoPaterno"];
-            $apellidoMaterno = $_POST["apellidoMaterno"];
-            $nombre = $_POST["nombre"];
-            $sexo = $_POST["sexo"];
-            $fechaNacimiento = $_POST["fechaNacimiento"];
+            $apellidoMaterno = $_POST["apellidoMaterno"]; 
+            $nombre = $_POST["nombre"]; 
+            $sexo = $_POST["sexo"]; 
+            $fechaNacimiento = $_POST["fechaNacimiento"]; 
             $fotografia = $_FILES["fotografia"];
-
+           
             //Datos adicionales
-            $curp = $_POST["curp"];
-            $rfc = $_POST["rfc"];
-            $estadoCivil = $_POST["estadoCivil"];
-            $tipoSangre = $_POST["tipoSangre"];
-            $estatura = $_POST["estatura"];
-            $peso = $_POST["peso"];
-            $complexion = $_POST["complexion"];
-            $discapacidad = $_POST["discapacidad"];
+            $curp = $_POST["curp"]; 
+            $rfc = $_POST["rfc"]; 
+            $estadoCivil = $_POST["estadoCivil"]; 
+            $tipoSangre = $_POST["tipoSangre"]; 
+            $estatura = $_POST["estatura"]; 
+            $peso = $_POST["peso"]; 
+            $complexion = $_POST["complexion"]; 
+            $discapacidad = $_POST["discapacidad"]; 
 
             //Domicilio
-            $pais = $_POST["pais"];
-            $estado = $_POST["estado"];
+            $pais = $_POST["pais"]; 
+            $estado = $_POST["estado"]; 
             $municipio = $_POST["municipio"];
-            $localidad = $_POST["localidad"];
-            $colonia = $_POST["colonia"];
-            $codigoPostal = $_POST["codigoPostal"];
+            $localidad = $_POST["localidad"]; 
+            $colonia = $_POST["colonia"]; 
+            $codigoPostal = $_POST["codigoPostal"]; 
             $tipoVialidad = $_POST["tipoVialidad"];
             $nombreVialidad = $_POST["nombreVialidad"];
-            $numeroExterior = $_POST["numeroExterior"];
+            $numeroExterior = $_POST["numeroExterior"]; 
             $numeroInterior = $_POST["numeroInterior"];
 
             //estudios
@@ -479,6 +346,7 @@
             //se genera el numero de empleado y se guarda el empleado en el archivo (la imagen tambien)
             $numeroEmpleado = generaNumeroEmpleado();
             guardarEmpleadoData($apellidoPaterno, $apellidoMaterno, $nombre, $sexo, $fechaNacimiento, $fotografia, $numeroEmpleado, $curp, $rfc, $estadoCivil, $tipoSangre, $estatura, $peso, $complexion, $discapacidad, $pais, $estado, $municipio, $localidad, $colonia, $codigoPostal, $tipoVialidad, $nombreVialidad, $numeroExterior, $numeroInterior, $estudios);
+            
         }
     }
 
@@ -487,7 +355,7 @@
 
     ?>
 
-    <script>
+<script>
         function redireccion() {
             // obtiene el url actual
             var currentUrl = window.location.href;
@@ -508,10 +376,11 @@
         // se sube el form con ajax
         $(document).ready(function() {
             $('#formRegistro').submit(function(event) {
-                event.preventDefault(); // no se sube el form de manera estandar
+                //desactiva el submit normal del form
+                event.preventDefault(); 
 
 
-                // crea objeto de data 
+                // crea un objeto FormData con los datos del form
                 var formData = new FormData(this);
                 // Se envia la solicitud ajax
                 $.ajax({
@@ -519,9 +388,9 @@
                     url: '/RegistroEmpleado.php',
                     data: formData,
                     //estas dos lineas son para que se pueda pasar la imagen correctamente
-                    contentType: false,
+                    contentType: false, 
                     //si enviamos formData, processData debe ser False
-                    processData: false,
+                    processData: false, 
 
                     success: function(response) {
                         console.log('se subio el form usando ajax');
