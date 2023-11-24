@@ -9,9 +9,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultar Empleado</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" href="/EjercicioReclutamiento/css/estilo.css" type="text/css">
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
 </head>
 
 <!-- cuando carga la pagina, todos los inputs toman los valores el empleado que estamos consultando -->
+
 <body onload="activarSelects()">
 
     <?php
@@ -27,328 +39,448 @@
     //estudios es un arreglo que contiene arreglos
     $estudios = $empleado['estudios'];
     ?>
-
-
-    <h1>Pagina de consulta de empleado</h1>
     <!-- formConsulta contiene todos los inputs que se pueden guardar (actualizar) -->
     <form id="formConsulta" action="ConsultarEmpleado.php" method="post">
-        <!-- numeroEmpleado se necesita para guardar la informacion, asi que se guarda en este input oculto-->
-        <input value=<?php echo json_encode($numeroEmpleado) ?> type="hidden" id="numeroEmpleado" name="numeroEmpleado">
-        <!-- el valor hiddenBorrarEmpleado determina si el empleado se borrará o no-->
-         <!--hiddenBorrarEmpleado valdra 0 siempre y cuando no se presione el boton de borrar empleado-->
-        <input value=0 type="hidden" id="hiddenBorrarEmpleado" name="hiddenBorrarEmpleado">
-        <!-- Datos Generales-->
-        <h3>Datos generales:</h3>
 
-        <label for="apellidoPaterno">Apellido Paterno:</label>
+        <div class="container mt-5">
+            <div class="card">
+                <div class="card-body">
 
-        <input value=<?php echo json_encode($empleado['apellidoPaterno']); ?> type="text" id="apellidoPaterno" name="apellidoPaterno" pattern="[A-Za-z]+" title="Escriba un apellido valido, solo letras" maxlength="20" required>
+                    <h3 class="mb-3 border-bottom pb-2 ">Datos generales:</h3>
 
-        <label for="apellidoMaterno">Apellido Materno:</label>
-        <input value=<?php echo json_encode($empleado['apellidoMaterno']); ?> type="text" id="apellidoMaterno" name="apellidoMaterno" pattern="[A-Za-z]+" title="Escriba un apellido valido, solo letras" maxlength="20" required>
+                    <!-- numeroEmpleado se necesita para guardar la informacion, asi que se guarda en este input oculto-->
+                    <input value=<?php echo json_encode($numeroEmpleado) ?> type="hidden" id="numeroEmpleado" name="numeroEmpleado">
+                    <!-- el valor hiddenBorrarEmpleado determina si el empleado se borrará o no-->
+                    <!--hiddenBorrarEmpleado valdra 0 siempre y cuando no se presione el boton de borrar empleado-->
+                    <input value=0 type="hidden" id="hiddenBorrarEmpleado" name="hiddenBorrarEmpleado">
 
-        <label for="nombre">Nombre:</label>
-        <input value=<?php echo json_encode($empleado['nombre']); ?> type="text" id="nombre" name="nombre" pattern="[A-Za-z ]+" title="Escriba un nombre valido, solo letras" maxlength="30" required>
+                    <!-- Datos Generales-->
+                    <div class="row">
 
-        <label for="sexo">Sexo:</label>
-        <select name="sexo" id="sexo" required>
-            <?php
-            crearSelect("sexo");
-            ?>
-        </select>
+                        <div class="col-md-4">
+                            <label class="text-muted" for="apellidoPaterno">Apellido Paterno<span class="text-danger">*</span>:</label>
+                            <input value=<?php echo json_encode($empleado['apellidoPaterno']); ?> type="text" class="form-control" id="apellidoPaterno" name="apellidoPaterno" pattern="[A-Za-z ]+" title="Escriba un apellido valido, solo letras" maxlength="20" required>
 
-        <label for="fechaNacimiento">Fecha de nacimiento:</label>
-        <input value=<?php echo json_encode($empleado['fechaNacimiento']); ?> type="date" id="fechaNacimiento" name="fechaNacimiento" required>
+                        </div>
 
-        <script>
-            function mostrarPreviewPonerDefault() {
-                var fotografia = document.getElementById('fotografia');
-                var preview = document.getElementById('preview');
+                        <div class="col-md-4">
+                            <label class="text-muted" for="apellidoMaterno">Apellido Materno<span class="text-danger">*</span>:</label>
+                            <input value=<?php echo json_encode($empleado['apellidoMaterno']); ?> type="text" class="form-control" id="apellidoMaterno" name="apellidoMaterno" pattern="[A-Za-z ]+" title="Escriba un apellido valido, solo letras" maxlength="20" required>
+                        </div>
 
-                // Ensure that a file is selected
-                if (fotografia.files && fotografia.files[0]) {
-                    var reader = new FileReader();
+                        <div class="col-md-4">
+                            <label class="text-muted" for="nombre">Nombre<span class="text-danger">*</span>:</label>
+                            <input value=<?php echo json_encode($empleado['nombre']); ?> type="text" class="form-control" id="nombre" name="nombre" pattern="[A-Za-z ]+" title="Escriba un nombre valido, solo letras" maxlength="30" required>
+                        </div>
 
-                    reader.onload = function(e) {
-                        preview.src = e.target.result;
-                        preview.style.display = 'block';
-                    };
-                    reader.readAsDataURL(fotografia.files[0]);
-                } else {
-                    
+                    </div>
 
-                }
-            }
-        </script>
-         <!-- se puede seleccionar una fotografia distinta para el empleado-->
-        <label for="fotografia">Seleccione una fotografia:</label>
-        <input type="file" name="fotografia" id="fotografia" accept="image/*" onchange="mostrarPreviewPonerDefault()">
-        <img id="preview" src="#" style="display:none; max-width: 300px; max-height: 300px;">
-        <?php $source = "C:/xampp/htdocs/EjercicioReclutamiento/img/$numeroEmpleado.jpg" ?>
-        <img src=<?php echo $source; ?> alt="Description" width="30px" height="20px">
+                    <div class="row">
+                        <div class="col-md-4 mt-3">
+                            <label class="text-muted" for="sexo">Sexo<span class="text-danger">*</span>:</label>
+                            <select class="form-control" name="sexo" id="sexo" required>
+                                <!--crea el select con todas sus opciones -->
+                                <?php
+                                crearSelect("sexo");
+                                ?>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mt-3">
+                            <label class="text-muted" for="fechaNacimiento">Fecha de nacimiento<span class="text-danger">*</span>:</label>
+                            <input value=<?php echo json_encode($empleado['fechaNacimiento']); ?> type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento" min="1920-01-01" max="2009-01-01" required>
+                        </div>
+                        <script>
+                            function mostrarPreviewPonerDefault() {
+                                var fotografia = document.getElementById('fotografia');
+                                var preview = document.getElementById('preview');
 
-        <!-- Form de datos adicionales -->
-        <h3>Datos adicionales:</h3>
+                                // Ensure that a file is selected
+                                if (fotografia.files && fotografia.files[0]) {
+                                    var reader = new FileReader();
 
-        <label for="curp">CURP:</label>
-        <input value=<?php echo json_encode($empleado['curp']); ?> type="text" id="curp" name="curp" minlength="18" maxlength="18" required>
+                                    reader.onload = function(e) {
+                                        preview.src = e.target.result;
+                                        preview.style.display = 'block';
+                                    };
+                                    reader.readAsDataURL(fotografia.files[0]);
+                                } else {
 
-        <label for="RFC">RFC:</label>
-        <input value=<?php echo json_encode($empleado['rfc']); ?> type="text" id="rfc" name="rfc" minlength="13" maxlength="13" required>
-        <span class="help-text">13 caracteres</span>
 
-        <label for="estadoCivil">Estado civil:</label>
-        <select value=<?php echo json_encode($empleado['estadoCivil']); ?> name="estadoCivil" id="estadoCivil" required>
-            <?php
-            crearSelect("estadoCivil");
-            ?>
-        </select>
+                                }
+                            }
+                        </script>
+                        <!-- se puede seleccionar una fotografia distinta para el empleado-->
+                        <div class="col-md-4 mt-3">
+                            <label class="text-muted" for="fotografia">Seleccione una fotografia:</label>
+                            <input type="file" class="form-control-file mt-2" name="fotografia" id="fotografia" accept="image/*" onchange="mostrarPreviewPonerDefault()">
+                            <img id="preview" src="#" style="display:none; max-width: 300px; max-height: 300px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Datos adicionales -->
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h3 class="mb-3 border-bottom pb-2 ">Datos adicionales:</h3>
 
-        <label for="tipoSangre">Tipo de sangre:</label>
-        <select name="tipoSangre" id="tipoSangre" required>
-            <?php
-            crearSelect("tipoSangre");
-            ?>
-        </select>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="text-muted" for="curp">CURP<span class="text-danger">*</span>:</label>
+                            <input value=<?php echo json_encode($empleado['curp']); ?> type="text" class="form-control" id="curp" name="curp" maxlength="18" required>
 
-        <label for="estatura">Estatura:</label>
-        <input value=<?php echo json_encode($empleado['estatura']); ?> type="number" id="estatura" name="estatura" step="0.01" min="1.40" max="2.30" required>
+                        </div>
 
-        <label for="peso">Peso:</label>
-        <input value=<?php echo json_encode($empleado['peso']); ?> type="number" id="peso" name="peso" step="0.01" min="40" max="150" required>
+                        <div class="col-md-4">
+                            <label class="text-muted" for="RFC">RFC<span class="text-danger">*</span>:</label>
+                            <input value=<?php echo json_encode($empleado['rfc']); ?> type="text" class="form-control" id="rfc" name="rfc" maxlength="13" required>
+                            <span class="help-text text-muted">13 caracteres</span>
 
-        <label for="complexion">Complexion:</label>
-        <select name="complexion" id="complexion" required>
-            <?php
-            crearSelect("complexion");
-            ?>
-        </select>
+                        </div>
 
-        <label for="discapacidad">Discapacidad:</label>
-        <select name="discapacidad" id="discapacidad" required>
-            <?php
-            crearSelect("discapacidad");
-            ?>
-        </select>
+                        <div class="col-md-4">
+                            <label class="text-muted" for="estadoCivil">Estado civil<span class="text-danger">*</span>:</label>
+                            <select class="form-control" name="estadoCivil" id="estadoCivil" required>
+                                <?php
+                                crearSelect("estadoCivil");
+                                ?>
+                            </select>
+                        </div>
+                    </div>
 
-        <!-- Domicilio -->
-        <h3>Domicilio:</h3>
+                    <div class="row">
 
-        <label for="pais">País:</label>
-        <select name="pais" id="pais" required>
-            <?php
-            crearSelect("pais");
-            ?>
-        </select>
+                        <div class="col-md-4 mt-3">
+                            <label class="text-muted" for="tipoSangre">Tipo de sangre<span class="text-danger">*</span>:</label>
+                            <select class="form-control" name="tipoSangre" id="tipoSangre" required>
+                                <?php
+                                crearSelect("tipoSangre");
+                                ?>
+                            </select>
 
-        <label for="estado">Estado:</label>
-        <select name="estado" id="estado" required>
-            <?php
-            crearSelect("estado");
-            ?>
-        </select>
+                        </div>
 
-        <label for="municipio">Municipio:</label>
-        <select name="municipio" id="municipio" required>
-            <?php
-            crearSelect("municipio");
-            ?>
-        </select>
+                        <div class="col-md-4 mt-3">
+                            <label class="text-muted" for="estatura">Estatura<span class="text-danger">*</span>:</label>
+                            <input value=<?php echo json_encode($empleado['estatura']); ?> class="form-control" type="number" id="estatura" name="estatura" placeholder="Ingrese la estatura en metros" step="0.01" min="1.40" max="2.30" required>
+                        </div>
 
-        <label for="localidad">Localidad:</label>
-        <select name="localidad" id="localidad" required>
-            <?php
-            crearSelect("localidad");
-            ?>
-        </select>
+                        <div class="col-md-4 mt-3">
+                            <label class="text-muted" for="peso">Peso<span class="text-danger">*</span>:</label>
+                            <input value=<?php echo json_encode($empleado['peso']); ?> class="form-control" type="number" id="peso" name="peso" placeholder="Ingrese el peso en kilogramos" step="0.01" min="40" max="150" required>
+                        </div>
 
-        <label for="colonia">Colonia:</label>
-        <select name="colonia" id="colonia" required>
-            <?php
-            crearSelect("colonia");
-            ?>
-        </select>
+                    </div>
 
-        <label for="codigoPostal">Codigo postal:</label>
-        <input value=<?php echo json_encode($empleado['codigoPostal']); ?> type="number" id="codigoPostal" name="codigoPostal" minlength="5" maxlength="10" required>
+                    <div class="row">
+                        <div class="col-md-4 mt-3">
+                            <label class="text-muted" for="complexion">Complexion<span class="text-danger">*</span>:</label>
+                            <select class="form-control" name="complexion" id="complexion" required>
+                                <?php
+                                crearSelect("complexion");
+                                ?>
+                            </select>
+                        </div>
 
-        <label for="tipoVialidad">Tipo de vialidad:</label>
-        <select name="tipoVialidad" id="tipoVialidad">
-            <?php
-            crearSelect("tipoVialidad");
-            ?>
-        </select>
+                        <div class="col-md-4 mt-3">
+                            <label class="text-muted" for="discapacidad">Discapacidad<span class="text-danger">*</span>:</label>
+                            <select class="form-control" name="discapacidad" id="discapacidad" required>
+                                <?php
+                                crearSelect("discapacidad");
+                                ?>
+                            </select>
 
-        <label for="nombreVialidad">Nombre de vialidad:</label>
-        <input value=<?php echo json_encode($empleado['nombreVialidad']); ?> type="text" id="nombreVialidad" name="nombreVialidad" maxlength="30" required>
+                        </div>
 
-        <label for="numeroExterior">Numero exterior:</label>
-        <input value=<?php echo json_encode($empleado['numeroExterior']); ?> type="number" id="numeroExterior" name="numeroExterior" minlength="1" maxlength="6" required>
+                    </div>
+                </div>
 
-        <label for="numeroInterior">Numero interior:</label>
-        <input value=<?php echo json_encode($empleado['numeroInterior']); ?> type="number" id="numeroInterior" name="numeroInterior" minlength="5" maxlength="10">
+            </div>
+            <!-- Domicilio -->
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h3 class="mb-3 border-bottom pb-2 ">Domicilio:</h3>
+                    <div class="row">
 
-        <!-- Estudios -->
-        <h3>Estudios:</h3>
-        <div id="studies-container">
+                        <div class="col-md-4">
+                            <label class="text-muted" for="pais">País<span class="text-danger">*</span>:</label>
+                            <select class="form-control" name="pais" id="pais" required>
+                                <?php
+                                crearSelect("pais");
+                                ?>
+                            </select>
+                        </div>
 
-            <!-- aqui se agregan o quitan estudios -->
-        </div>
-        <input type="hidden" id="studyCount" name="studyCount">
-        <script>
-            var studyCount = 0;
-            //igual que en RegistrarEmpleado, agregan inputs dinamicamente, dependiendo de los botones agregar y  quitar estudio
-            function agregarEstudio() {
-                var container = document.getElementById('studies-container');
-                var newStudyDiv = document.createElement('div');
-                newStudyDiv.innerHTML = `
-                <div class="study-container">
-                <label for="escuela">Escuela:</label>
-                <input type="text" id="escuela" name="escuela" maxlength="30">
+                        <div class="col-md-4">
+                            <label class="text-muted" for="estado">Estado<span class="text-danger">*</span>:</label>
+                            <select class="form-control" name="estado" id="estado" required>
+                                <?php
+                                crearSelect("estado");
+                                ?>
+                            </select>
+                        </div>
 
-                <label for="gradoDeEstudios">Grado de estudios:</label>
-                <select id="gradoDeEstudios" name="gradoDeEstudios">
+                        <div class="col-md-4">
+                            <label class="text-muted" for="municipio">Municipio<span class="text-danger">*</span>:</label>
+                            <select class="form-control" name="municipio" id="municipio" required>
+                                <?php
+                                crearSelect("municipio");
+                                ?>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mt-3">
+                            <label class="text-muted" for="localidad">Localidad<span class="text-danger">*</span>:</label>
+                            <select class="form-control" name="localidad" id="localidad" required>
+                                <?php
+                                crearSelect("localidad");
+                                ?>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 mt-3">
+                            <label class="text-muted" for="colonia">Colonia<span class="text-danger">*</span>:</label>
+                            <select class="form-control" name="colonia" id="colonia" required>
+                                <?php
+                                crearSelect("colonia");
+                                ?>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 mt-3">
+                            <label class="text-muted" for="codigoPostal">Codigo postal<span class="text-danger">*</span>:</label>
+                            <input value=<?php echo json_encode($empleado['codigoPostal']); ?> class="form-control" type="number" id="codigoPostal" name="codigoPostal" minlength="5" maxlength="10" required>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mt-3">
+                            <label class="text-muted" for="tipoVialidad">Tipo de vialidad:</label>
+                            <select class="form-control" name="tipoVialidad" id="tipoVialidad">
+                                <?php
+                                crearSelect("tipoVialidad");
+                                ?>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 mt-3">
+                            <label class="text-muted" for="nombreVialidad">Nombre de vialidad<span class="text-danger">*</span>:</label>
+                            <input value=<?php echo json_encode($empleado['nombreVialidad']); ?> class="form-control" type="text" id="nombreVialidad" name="nombreVialidad" maxlength="30" required>
+                        </div>
+
+                        <div class="col-md-4 mt-3">
+                            <label class="text-muted" for="numeroExterior">Numero exterior<span class="text-danger">*</span>:</label>
+                            <input value=<?php echo json_encode($empleado['numeroExterior']); ?> class="form-control" type="number" id="numeroExterior" name="numeroExterior" minlength="1" maxlength="6" required>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mt-3">
+                            <label class="text-muted" for="numeroInterior">Numero interior:</label>
+                            <input value=<?php echo json_encode($empleado['numeroInterior']); ?> class="form-control" type="number" id="numeroInterior" name="numeroInterior" minlength="5" maxlength="10">
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <!-- Estudios -->
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h3 class="mb-3 border-bottom pb-2 ">Estudios:</h3>
+                    <div id="studies-container">
+                        <!-- aqui se agregan o quitan estudios -->
+                    </div>
+                    <input type="hidden" id="studyCount" name="studyCount">
+                    <button type="button" id="add-study-btn" onclick="agregarEstudio()">Agregar Estudio</button>
+
+                    <button type="button" id="botonActualizar" name="botonActualizar" onclick="postData()">Guardar</button>
+                    <button type="button" id="botonBorrar" name="botonBorrar" onclick="eliminarEmpleado()">Eliminar empleado</button>
+    </form>
+
+    </div>
+
+    <script>
+        var studyCount = 0;
+        //igual que en RegistrarEmpleado, agregan inputs dinamicamente, dependiendo de los botones agregar y  quitar estudio           
+        function agregarEstudio() {
+            var container = document.getElementById('studies-container');
+            var newStudyDiv = document.createElement('div');
+            newStudyDiv.innerHTML = `
+            <div class="study-container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label class="text-muted" for="escuela">Escuela<span class="text-danger">*</span>:</label>
+                        <input class="form-control" type="text" id="escuela" name="escuela" maxlength="30" >
+
+                    </div>
+
+                    <div class="col-md-3">
+                        <label  class="text-muted" for="gradoDeEstudios">Grado de estudios<span class="text-danger">*</span>:</label>
+                        <select class="form-control" id="gradoDeEstudios" name="gradoDeEstudios">
                         <?php
                         crearSelect("gradoDeEstudios");
                         ?>
                         </select>
 
-                <label for="fechaInicio">Fecha de inicio:</label>
-                <input type="date" id="fechaInicio" name="fechaInicio">
+                    </div>
 
-                <label for="fechaFin">Fecha de Fin:</label>
-                <input type="date" id="fechaFin" name="fechaFin">
+                    <div class="col-md-3">
+                        <label class="text-muted" for="fechaInicio">Fecha de inicio<span class="text-danger">*</span>:</label>
+                        <input class="form-control" type="date" id="fechaInicio" name="fechaInicio">
 
-                <button onclick="quitarEstudio(this)">Eliminar Estudio</button>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="text-muted" for="fechaFin">Fecha de Fin<span class="text-danger">*</span>:</label>
+                        <input class="form-control" type="date" id="fechaFin" name="fechaFin">
+
+                    </div>
+
+                    <button onclick="quitarEstudio(this)">Eliminar Estudio</button>
+            
+                </div>
 
             </div>
         `;
-                //Cambiar el ID del nuevo div para que sea unico
-                studyCount++;
-                var studyID = 'studyContainer' + studyCount;
-                newStudyDiv.id = studyID;
-                //se agrega el nuevo div con inputs al codigo 
-                container.appendChild(newStudyDiv);
-                //cambiar nombre y id de los inputs
-                var escuela = document.getElementById('escuela');
-                var gradoDeEstudios = document.getElementById('gradoDeEstudios');
-                var fechaInicio = document.getElementById('fechaInicio');
-                var fechaFin = document.getElementById('fechaFin');
+            //Cambiar el ID del nuevo div para que sea unico
+            studyCount++;
+            var studyID = 'studyContainer' + studyCount;
+            newStudyDiv.id = studyID;
+            //se agrega el nuevo div con inputs al codigo 
+            container.appendChild(newStudyDiv);
+            //cambiar nombre y id de los inputs
+            var escuela = document.getElementById('escuela');
+            var gradoDeEstudios = document.getElementById('gradoDeEstudios');
+            var fechaInicio = document.getElementById('fechaInicio');
+            var fechaFin = document.getElementById('fechaFin');
 
-                
-                escuela.id = 'escuela' + studyCount;
-                escuela.name = 'escuela' + studyCount;
-                gradoDeEstudios.id = 'gradoDeEstudios' + studyCount;
-                gradoDeEstudios.name = 'gradoDeEstudios' + studyCount;
-                fechaInicio.id = 'fechaInicio' + studyCount;
-                fechaInicio.name = 'fechaInicio' + studyCount;
-                fechaFin.id = 'fechaFin' + studyCount;
-                fechaFin.name = 'fechaFin' + studyCount;
+            escuela.id = 'escuela' + studyCount;
+            escuela.name = 'escuela' + studyCount;
+            gradoDeEstudios.id = 'gradoDeEstudios' + studyCount;
+            gradoDeEstudios.name = 'gradoDeEstudios' + studyCount;
+            fechaInicio.id = 'fechaInicio' + studyCount;
+            fechaInicio.name = 'fechaInicio' + studyCount;
+            fechaFin.id = 'fechaFin' + studyCount;
+            fechaFin.name = 'fechaFin' + studyCount;
 
-                //los inputs se hacen obligatorios una vez se crean
-                escuela.setAttribute('required', 'true');
-                gradoDeEstudios.setAttribute('required', 'true');
-                fechaInicio.setAttribute('required', 'true');
-                fechaFin.setAttribute('required', 'true');
+            //los inputs se hacen obligatorios una vez se crean
+            escuela.setAttribute('required', 'true');
+            gradoDeEstudios.setAttribute('required', 'true');
+            fechaInicio.setAttribute('required', 'true');
+            fechaFin.setAttribute('required', 'true');
+            //se actualiza el contador de estudios
+            var contadorEstudios = document.getElementById('studyCount');
+            contadorEstudios.value = studyCount;
 
+            //la fecha fin no puede ser antes que la de inicio
+            //cuando cambia la fecha de inicio, se establece como el maximo de la fecha fin   
+            fechaInicio.addEventListener('change', function() {
 
-                //se actualiza el contador de estudios
-                var contadorEstudios = document.getElementById('studyCount');
-                contadorEstudios.value = studyCount;
+                fechaFin.setAttribute('min', this.value);
 
-                //la fecha fin no puede ser antes que la de inicio
-                //cuando cambia la fecha de inicio, se establece como el maximo de la fecha fin   
-                fechaInicio.addEventListener('change', function() {
+            })
+        }
 
-                    fechaFin.setAttribute('min', this.value);
+        //al quitar un estudio, se reduce por 1 el contador de estudios para que no interfiera con el ciclo de guardado el manejo del post en php
+        function quitarEstudio(boton) {
+            studyCount--;
+            var container = document.getElementById('studies-container');
+            //queremos el study div generado, el que contiene los 4 inputs
+            //el parentNode del study container es el studyDiv, el cual está dentro del studies-container
+            var studyDiv = boton.parentNode.parentNode.parentNode;
 
-                })
+            //se elimina el div con su contenido y se actualiza el contador de estudios
+            container.removeChild(studyDiv);
+            var contadorEstudios = document.getElementById('studyCount');
+            contadorEstudios.value = studyCount;
+        }
+    </script>
+    <?php
+    //en este bloque de php se asignan los datos del empleado a los inputs
+    $numeroEstudios = 0;
+    //estudios es el arreglo que contiene arreglos
+    //si se tienen tres estudios, $numeroEstudio es 3, 3 arreglos con propiedades
+    //por cada estudio, se agrega un estudio (los 4 inputs con un boton de eliminar estudio, esto con la funcion agregarEstudio();)
+    foreach ($estudios as $numeroEstudio) {
+        $numeroEstudios++;
+        echo "<script>";
+        echo  "agregarEstudio();";
+        echo '</script>';
+        //cada estudio tiene su $dato (escuela,grado, fechainicio,fechafin) y cada dato tiene su llave
+        //se crean los nombres de todos los inputs que ya se registraron
+        //ej: $nombreInput = "escuela1"
+        //   $valorInput = "unison"     
+        foreach ($numeroEstudio as $dato => $valor) {
+            $nombreInput = "$dato$numeroEstudios";
+            $valorInput = $valor;
 
-            }
-            //se reduce el conteo de estudios al eliminar uno
-            function quitarEstudio(boton) {
-                studyCount--;
-                var container = document.getElementById('studies-container');
-                var studyDiv = boton.parentNode.parentNode.id;
-
-                var studyDiv = document.getElementById(studyDiv);
-
-                //se elimina el div con su contenido y se actualiza el contador de estudios
-                container.removeChild(studyDiv);
-                var contadorEstudios = document.getElementById('studyCount');
-                contadorEstudios.value = studyCount;
-            }
-        </script>
-
-        <?php
-        $numeroEstudios = 0;
-        //estudios es el arreglo que contiene arreglos
-        //si se tienen tres estudios, $numeroEstudio es 3, 3 arreglos con propiedades
-        //por cada estudio, se agrega un estudio (los 4 inputs con un boton de eliminar estudio, esto con la funcion agregarEstudio();)
-        foreach ($estudios as $numeroEstudio) {
-            $numeroEstudios++;
             echo "<script>";
-            echo  "agregarEstudio();";
+            echo "for (let i = 1; i <= $numeroEstudios ; i++) {";
+            //se agregan los valores a los inputs
+            echo "let valorInput = '$valorInput';";
+            echo "document.getElementById('$nombreInput').value = valorInput;";
+            echo "}";
             echo '</script>';
-            //cada estudio tiene su $dato (escuela,grado, fechainicio,fechafin) y cada dato tiene su llave
-            //se crean los nombres de todos los inputs que ya se registraron
-            //ej: $nombreInput = "escuela1"
-            //   $valorInput = "unison"     
-            foreach ($numeroEstudio as $dato => $valor) {
-                $nombreInput = "$dato$numeroEstudios";
-                $valorInput = $valor;
+        }
+    }
+    ?>
+    <script>
+        function mostrarPreviewPonerDefault() {
 
-                echo "<script>";
-                echo "for (let i = 1; i <= $numeroEstudios ; i++) {";
-                //se agregan los valores a los inputs
-                echo "let valorInput = '$valorInput';";
-                echo "document.getElementById('$nombreInput').value = valorInput;";
-                echo "}";
-                echo '</script>';
+            var fotografia = document.getElementById('fotografia');
+            var preview = document.getElementById('preview');
+
+            // asegura que se tenga seleccionado un archivo
+            if (fotografia.files && fotografia.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(fotografia.files[0]);
+            } else {
+
+
             }
         }
-        ?>
-        <script>
-            //funcion que toma los datos del form y hace el post en esta misma pagina
-            function postData() {
-                //se toman todos inputs y sus valores del formConsulta
-                var formConsulta = new FormData(document.getElementById('formConsulta'));
+    </script>
+    <script>
+        //funcion que toma los datos del form y hace el post en esta misma pagina
+        function postData() {
+            //se toman todos inputs y sus valores del formConsulta
+            var formConsulta = new FormData(document.getElementById('formConsulta'));
 
-                //se crea un objeto XMLHttpRequest que enviara un metodo post
-                //se enviara a la pagina donde se encuentra (window.location.href) y sera de tipo asincrono (true)
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', window.location.href, true);
+            //se crea un objeto XMLHttpRequest que enviara un metodo post
+            //se enviara a la pagina donde se encuentra (window.location.href) y sera de tipo asincrono (true)
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', window.location.href, true);
 
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState == 4 && xhr.status == 200) {
-                        //por ahora no se tiene que hacer con la respuesta del exito
-                    }
-                };
-                //se envia el post con los datos del form a esta misma pagina
-                xhr.send(formConsulta);
-            }
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    //por ahora no se tiene que hacer con la respuesta del exito
+                }
+            };
+            //se envia el post con los datos del form a esta misma pagina
+            xhr.send(formConsulta);
+        }
 
-            //funcion de cuando se da click al boton de borrar empleado
-            function eliminarEmpleado() {
-                //se cambia el valor del input escondido, cuando se lea el valor de "1" en el manejo del post, se eliminará el empleado
-                let hiddenBotonBorrar = document.getElementById('hiddenBorrarEmpleado');
-                hiddenBotonBorrar.value = 1;
-                //se hace post
-                postData();
-            }
-        </script>
+        //funcion de cuando se da click al boton de borrar empleado
+        function eliminarEmpleado() {
+            //se cambia el valor del input escondido, cuando se lea el valor de "1" en el manejo del post, se eliminará el empleado
+            let hiddenBotonBorrar = document.getElementById('hiddenBorrarEmpleado');
+            hiddenBotonBorrar.value = 1;
+            //se hace post
+            postData();
+        }
+    </script>
+    </div>
 
-
-        <button type="button" id="add-study-btn" onclick="agregarEstudio()">Agregar Estudio</button>
-
-
-        <button type="button" id="botonActualizar" name="botonActualizar" onclick="postData()">Guardar</button>
-
-
-        <button type="button" id="botonBorrar" name="botonBorrar" onclick="eliminarEmpleado()">Eliminar empleado</button>
-
-    </form>
-
+    </div>
 
     <script>
         //cuando carga el sistema, se agregan los valores del empleado en los inputs vacios
@@ -382,9 +514,11 @@
     <?php
     //cuando entra el post, se valida que todos los campos requeridos tengan valor o no se actualizaran los valores
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        if (isset($_POST["apellidoPaterno"]) && isset($_POST["apellidoMaterno"]) && isset($_POST["nombre"]) && isset($_POST["sexo"]) && isset($_POST["fechaNacimiento"]) && isset($_POST["curp"]) && isset($_POST["rfc"]) && isset($_POST["estadoCivil"]) && isset($_POST["tipoSangre"])
-            && isset($_POST["estatura"]) && isset($_POST["peso"]) && isset($_POST["complexion"]) && isset($_POST["discapacidad"]) && isset($_POST["pais"]) && isset($_POST["estado"]) && isset($_POST["municipio"]) && isset($_POST["localidad"]) && isset($_POST["colonia"]) 
-            && isset ($_POST["codigoPostal"]) && isset($_POST["nombreVialidad"]) && isset($_POST["numeroExterior"])) {
+        if (
+            isset($_POST["apellidoPaterno"]) && isset($_POST["apellidoMaterno"]) && isset($_POST["nombre"]) && isset($_POST["sexo"]) && isset($_POST["fechaNacimiento"]) && isset($_POST["curp"]) && isset($_POST["rfc"]) && isset($_POST["estadoCivil"]) && isset($_POST["tipoSangre"])
+            && isset($_POST["estatura"]) && isset($_POST["peso"]) && isset($_POST["complexion"]) && isset($_POST["discapacidad"]) && isset($_POST["pais"]) && isset($_POST["estado"]) && isset($_POST["municipio"]) && isset($_POST["localidad"]) && isset($_POST["colonia"])
+            && isset($_POST["codigoPostal"]) && isset($_POST["nombreVialidad"]) && isset($_POST["numeroExterior"])
+        ) {
 
             //si este valor es 0, no se activó el boton de borrarEmpleado
             $borrarEmpleado = $_POST["borrarEmpleado"];
